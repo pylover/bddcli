@@ -7,12 +7,21 @@ from bddcli import Command, when, stdout, status, stderr
 
 def test_basic_pipeline():
     def f():
+        stdin = sys.stdin.read()
+        if stdin == 'bad':
+            print('Bad', file=sys.stderr)
+            return 1
+
         print('Foo')
-        print('Bar', file=sys.stderr)
         return 0
 
-    with Command(f, 'Wihtour parameters'):
+    with Command(f, 'Wihtout any parameter'):
         assert status == 0
         assert stdout == 'Foo\n'
-        assert stderr == 'Bar\n'
+        assert stderr == ''
+
+        when('Standart input is bad', stdin='bad')
+        assert status == 1
+        assert stderr == 'Bad\n'
+        assert stdout == ''
 

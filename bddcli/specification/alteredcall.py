@@ -11,7 +11,7 @@ UNCHANGED = Unchanged()
 
 class AlteredCall(Call):
 
-    def __init__(self, title, positionals=UNCHANGED, optionals=UNCHANGED,
+    def __init__(self, base_call, title, positionals=UNCHANGED, optionals=UNCHANGED,
                  flags=UNCHANGED, stdin=UNCHANGED, extra_environ=None,
                  description=None, response: Response=None):
 

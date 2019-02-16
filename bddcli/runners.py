@@ -22,14 +22,17 @@ class FunctionRunner(Connector):
         # Backup
         stdout_backup = sys.stdout
         stderr_backup = sys.stderr
+        stdin_backup = sys.stdin
 
         sys.stdout = out = io.StringIO()
         sys.stderr = err = io.StringIO()
+        sys.stdin = io.StringIO(stdin or '')
 
         status = self.function()
-        
+
         sys.stdout = stdout_backup
         sys.stderr = stderr_backup
+        sys.stdin = stdin_backup
 
         return Response(status, out.getvalue(), err.getvalue())
 
