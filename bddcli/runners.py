@@ -1,8 +1,12 @@
 import io
 import abc
 import sys
+import multiprocessing as mp
 
 from .response import Response
+
+
+mp.set_start_method('spawn')
 
 
 class Connector(metaclass=abc.ABCMeta):
@@ -19,6 +23,10 @@ class FunctionRunner(Connector):
 
     def run(self, positionals=None, optionals=None, flags=None, stdin=None,
             extra_environ=None, **kw) -> Response:
+
+        p = mp.Process(target=self.function)
+        p.start()
+        p.join()
         # Backup
         stdout_backup = sys.stdout
         stderr_backup = sys.stderr
