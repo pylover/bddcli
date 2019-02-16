@@ -1,5 +1,3 @@
-from .curl import CURL
-
 
 class Documenter:
     def __init__(self, formatter_factory, fieldinfo=None):

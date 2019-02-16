@@ -1,5 +1,3 @@
-from ..headerset import HeaderSet
-from ..helpers import normalize_query_string
 from ..response import Response
 from .call import Call
 

@@ -3,14 +3,15 @@ from ..proxy import ObjectProxy
 from ..specification import FirstCall, AlteredCall, Call
 
 from .story import Story
-from .given import Given
+from .command import Command
 from .manipulation import Manipulator, Append, Remove, Update, \
     CompositeManipulatorInitializer
 
 
-story = ObjectProxy(Given.get_current)
-response = ObjectProxy(lambda: story.response)
+story = ObjectProxy(Command.get_current)
 status = ObjectProxy(lambda: response.status)
+stdout = ObjectProxy(lambda: story.response.stdout)
+stderr = ObjectProxy(lambda: story.response.stderr)
 given = CompositeManipulatorInitializer()
 
 

@@ -4,6 +4,7 @@ from abc import ABCMeta, abstractmethod
 
 from ..exceptions import CallVerifyError
 from ..response import Response
+from ..runners import FunctionRunner
 
 
 class Call(metaclass=ABCMeta):
@@ -38,7 +39,7 @@ class Call(metaclass=ABCMeta):
         return result
 
     def invoke(self, application) -> Response:
-        return WSGIConnector(application).request(
+        return FunctionRunner(application).run(
             self.positionals,
             self.optionals,
             self.flags,
