@@ -27,6 +27,7 @@ class FunctionRunner(Connector):
         p = mp.Process(target=self.function)
         p.start()
         p.join()
+
         # Backup
         stdout_backup = sys.stdout
         stderr_backup = sys.stderr

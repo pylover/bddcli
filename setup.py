@@ -28,6 +28,11 @@ setup(
         'easycli'
     ],
     packages=find_packages(),
+    entry_points={
+        'console_scripts': [
+            'bddcli-bootstrapper = bddcli_bootstrapper:main'
+        ]
+    },
     license='MIT',
     classifiers=[
         'Environment :: Console',

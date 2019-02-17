@@ -5,17 +5,18 @@ import pytest
 from bddcli import Command, when, stdout, status, stderr
 
 
+def foo():
+    stdin = sys.stdin.read()
+    if stdin == 'bad':
+        print('Bad', file=sys.stderr)
+        return 1
+
+    print('Foo')
+    return 0
+
+
 def test_basic_pipeline():
-    def f():
-        stdin = sys.stdin.read()
-        if stdin == 'bad':
-            print('Bad', file=sys.stderr)
-            return 1
-
-        print('Foo')
-        return 0
-
-    with Command(f, 'Wihtout any parameter'):
+    with Command('bddcli.tests.test_pipeline:foo', 'Wihtout any parameter'):
         assert status == 0
         assert stdout == 'Foo\n'
         assert stderr == ''
