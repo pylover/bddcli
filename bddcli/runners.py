@@ -1,7 +1,8 @@
-import io
+import os
 import abc
 import sys
 import subprocess as sp
+from os import path
 
 from .response import Response
 
@@ -14,7 +15,15 @@ class Runner(metaclass=abc.ABCMeta):
 
 
 class SubprocessRunner(Runner):
-    bootstrapper = 'bddcli_bootstrapper'
+
+    @property
+    def bootstrapper(self):
+        bootstrapper = 'bddcli-bootstrapper'
+        if 'VIRTUAL_ENV' in os.environ:
+            bindir = path.join(os.environ['VIRTUAL_ENV'], 'bin')
+        else:
+            bindir = '/usr/local/bin'
+        return path.join(bindir, bootstrapper)
 
     def __init__(self, application, environ=None):
         self.application = application
@@ -23,15 +32,16 @@ class SubprocessRunner(Runner):
     def run(self, positionals=None, optionals=None, flags=None, stdin=None,
             extra_environ=None, working_directory=None, **kw) -> Response:
         result = sp.run(
-            [
+            ' '.join([
                 self.bootstrapper,
                 self.application.name,
                 self.application.address,
-            ],
-            stdin=stdin,
+            ]),
+            input=stdin,
             stdout=sp.PIPE,
             stderr=sp.PIPE,
             shell=True,
+            encoding='utf8',
             cwd=working_directory,
         )
         return Response(result.returncode, result.stdout, result.stderr)

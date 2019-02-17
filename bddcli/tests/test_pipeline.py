@@ -18,9 +18,9 @@ def foo():
 def test_basic_pipeline():
     app = Application('foo', 'bddcli.tests.test_pipeline:foo')
     with Command(app, 'Wihtout any parameter'):
+        assert stderr == ''
         assert status == 0
         assert stdout == 'Foo\n'
-        assert stderr == ''
 
         when('Standart input is bad', stdin='bad')
         assert status == 1
