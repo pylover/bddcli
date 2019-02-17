@@ -1,6 +1,6 @@
 
 from ..proxy import ObjectProxy
-from ..specification import FirstCall, AlteredCall, Call
+from ..calls import FirstCall, AlteredCall, Call
 
 from .story import Story
 from .command import Command

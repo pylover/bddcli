@@ -1,5 +1,5 @@
 from ..context import Context
-from ..specification import FirstCall, AlteredCall, Call
+from ..calls import FirstCall, AlteredCall, Call
 from .story import Story
 from .manipulation import Manipulator
 

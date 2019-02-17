@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-from bddcli import Command, when, stdout, status, stderr
+from bddcli import Command, when, stdout, status, stderr, Application
 
 
 def foo():
@@ -16,7 +16,8 @@ def foo():
 
 
 def test_basic_pipeline():
-    with Command('bddcli.tests.test_pipeline:foo', 'Wihtout any parameter'):
+    app = Application('foo', 'bddcli.tests.test_pipeline:foo')
+    with Command(app, 'Wihtout any parameter'):
         assert status == 0
         assert stdout == 'Foo\n'
         assert stderr == ''
