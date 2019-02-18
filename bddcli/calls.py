@@ -27,9 +27,6 @@ class Call(metaclass=ABCMeta):
         if self.positionals is not None:
             result['positionals'] = self.positionals
 
-        if self.optionals is not None:
-            result['optionals'] = self.optionals
-
         if self.flags is not None:
             result['flags'] = self.flags
 
@@ -41,7 +38,6 @@ class Call(metaclass=ABCMeta):
     def invoke(self, application) -> Response:
         return SubprocessRunner(application).run(
             self.positionals,
-            self.optionals,
             self.flags,
             self.stdin,
             self.extra_environ
@@ -78,16 +74,6 @@ class Call(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def optionals(self):  # pragma: no cover
-        pass
-
-    @optionals.setter
-    @abstractmethod
-    def optionals(self, value):  # pragma: no cover
-        pass
-
-    @property
-    @abstractmethod
     def flags(self) -> dict:  # pragma: no cover
         pass
 
@@ -111,18 +97,15 @@ class FirstCall(Call):
 
     _stdin = None
     _positionals = None
-    _optionals = None
     _flags = None
     _extra_environ = None
 
-    def __init__(self, title, positionals=None, optionals=None, flags=None,
-                 stdin=None, extra_environ=None, description=None,
-                 response: Response=None):
+    def __init__(self, title, positionals=None, flags=None, stdin=None,
+                 extra_environ=None, description=None, response=None):
 
         super().__init__(title, description=description, response=response)
         self.stdin = stdin
         self.positionals = positionals
-        self.optionals = optionals
         self.flags = flags
         self.extra_environ = extra_environ
 
@@ -141,14 +124,6 @@ class FirstCall(Call):
     @positionals.setter
     def positionals(self, value):
         self._positionals = value
-
-    @property
-    def optionals(self):
-        return self._optionals
-
-    @optionals.setter
-    def optionals(self, value):
-        self._optionals = value
 
     @property
     def flags(self):
@@ -176,7 +151,7 @@ UNCHANGED = Unchanged()
 
 class AlteredCall(Call):
 
-    def __init__(self, base_call, title, positionals=UNCHANGED, optionals=UNCHANGED,
+    def __init__(self, base_call, title, positionals=UNCHANGED,
                  flags=UNCHANGED, stdin=UNCHANGED, extra_environ=None,
                  description=None, response: Response=None):
 
@@ -185,7 +160,6 @@ class AlteredCall(Call):
         super().__init__(title, description=description, response=response)
         self.stdin = stdin
         self.positionals = positionals
-        self.optionals = optionals
         self.flags = flags
         self.extra_environ = extra_environ
 
@@ -231,18 +205,6 @@ class AlteredCall(Call):
     @positionals.deleter
     def positionals(self):
         del self.diff['positionals']
-
-    @property
-    def optionals(self):
-        return self.diff.get('optionals', self.base_call.optionals)
-
-    @optionals.setter
-    def optionals(self, value):
-        self.update_diff('optionals', value)
-
-    @optionals.deleter
-    def optionals(self):
-        del self.diff['optionals']
 
     @property
     def flags(self):

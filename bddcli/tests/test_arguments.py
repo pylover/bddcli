@@ -9,9 +9,11 @@ def foo():
     print(' '.join(sys.argv))
 
 
-def test_arguments():
-    app = Application('foo', 'bddcli.tests.test_arguments:foo')
-    with Command(app, 'Pass a single argument', positionals=['bar']):
+app = Application('foo', 'bddcli.tests.test_arguments:foo')
+
+
+def test_positionals():
+    with Command(app, 'Pass single positional argument', positionals=['bar']):
         assert stdout == 'foo bar\n'
 
         when('Without any argument', positionals=given - 'bar')
@@ -20,4 +22,12 @@ def test_arguments():
         when('Pass multiple arguments', positionals=given + 'baz')
         assert stdout == 'foo bar baz\n'
 
+
+def test_flags():
+    with Command(
+        app,
+        'Pass single optional argument',
+        flags=['--bar=baz']
+    ):
+        assert stdout == 'foo --bar=baz\n'
 

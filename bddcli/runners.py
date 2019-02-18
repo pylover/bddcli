@@ -9,7 +9,7 @@ from .response import Response
 
 class Runner(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def run(self, positionals=None, optionals=None, flags=None, stdin=None,
+    def run(self, positionals=None, flags=None, stdin=None,
             environ=None, **kw) -> Response:
         pass
 
@@ -29,13 +29,17 @@ class SubprocessRunner(Runner):
         self.application = application
         self.environ = environ
 
-    def run(self, positionals=None, optionals=None, flags=None, stdin=None,
-            extra_environ=None, working_directory=None, **kw) -> Response:
+    def run(self, positionals=None, flags=None, stdin=None, extra_environ=None,
+            working_directory=None, **kw) -> Response:
         command = [
             self.bootstrapper,
             self.application.name,
             self.application.address,
         ]
+
+        if flags:
+            command += flags
+
         if positionals:
             command += positionals
 
