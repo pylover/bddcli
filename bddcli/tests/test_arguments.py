@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-from bddcli import Command, when, stdout, status, stderr, Application
+from bddcli import Command, when, stdout, status, stderr, Application, given
 
 
 def foo():
@@ -11,12 +11,13 @@ def foo():
 
 def test_arguments():
     app = Application('foo', 'bddcli.tests.test_arguments:foo')
-    with Command(app, 'Wihtout any arguments'):
-        assert stdout == 'foo\n'
-
-        when('Pass a single argument', positionals=['bar'])
+    with Command(app, 'Pass a single argument', positionals=['bar']):
         assert stdout == 'foo bar\n'
 
-        when('Pass multiple arguments', positionals=['bar', 'baz'])
+        when('Without any argument', given - 'bar')
+        assert stdout == 'foo\n'
+
+        when('Pass multiple arguments', positionals=given + 'baz')
         assert stdout == 'foo bar baz\n'
+
 

@@ -26,7 +26,6 @@ class Manipulator(metaclass=abc.ABCMeta):
         return CompositeManipulator(self) | other
 
 
-
 class Append(Manipulator):
     def apply(self, container):
         if isinstance(container, dict):
@@ -82,10 +81,12 @@ class CompositeManipulator(Manipulator):
     def __add__(self, other):
         if isinstance(other, dict):
             manipulator = Append(**other)
+        elif isinstance(other, list):
+            manipulator = Append(*other)
         elif isinstance(other, Manipulator):
             manipulator = other
         else:
-            raise TypeError('Only dict or Manipulator will be accepted')
+            manipulator = Append(other)
 
         self.rules.append(manipulator)
         return self
