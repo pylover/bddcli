@@ -31,12 +31,16 @@ class SubprocessRunner(Runner):
 
     def run(self, positionals=None, optionals=None, flags=None, stdin=None,
             extra_environ=None, working_directory=None, **kw) -> Response:
+        command = [
+            self.bootstrapper,
+            self.application.name,
+            self.application.address,
+        ]
+        if positionals:
+            command += positionals
+
         result = sp.run(
-            ' '.join([
-                self.bootstrapper,
-                self.application.name,
-                self.application.address,
-            ]),
+            ' '.join(command),
             input=stdin,
             stdout=sp.PIPE,
             stderr=sp.PIPE,

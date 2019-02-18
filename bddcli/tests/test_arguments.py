@@ -14,3 +14,6 @@ def test_arguments():
     with Command(app, 'Wihtout any arguments'):
         assert stdout == 'foo\n'
 
+        when('With a single argument', positionals=['bar'])
+        assert stdout == 'foo bar\n'
+
