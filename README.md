@@ -64,6 +64,9 @@ with Command(app, 'Pass stdin', stdin='foo'):
 
 ```
 
+
+### Standard output and error
+
 ```python
 from bddcli import stderr, stdout
 
