@@ -44,7 +44,7 @@ class Call(metaclass=ABCMeta):
             self.flags,
             self.stdin,
             self.working_directory,
-            self.extra_environ
+            self.environ
         )
 
     def verify(self, application):
@@ -88,12 +88,12 @@ class Call(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def extra_environ(self) -> dict:  # pragma: no cover
+    def environ(self) -> dict:  # pragma: no cover
         pass
 
-    @extra_environ.setter
+    @environ.setter
     @abstractmethod
-    def extra_environ(self, value):  # pragma: no cover
+    def environ(self, value):  # pragma: no cover
         pass
 
 
@@ -102,11 +102,11 @@ class FirstCall(Call):
     _stdin = None
     _positionals = None
     _flags = None
-    _extra_environ = None
+    _environ = None
     _working_directory = None
 
     def __init__(self, title, positionals=None, flags=None, stdin=None,
-                 working_directory=None, extra_environ=None, description=None,
+                 working_directory=None, environ=None, description=None,
                  response=None):
 
         super().__init__(title, description=description, response=response)
@@ -114,7 +114,7 @@ class FirstCall(Call):
         self.positionals = positionals
         self.flags = flags
         self.working_directory = working_directory
-        self.extra_environ = extra_environ
+        self.environ = environ
 
     @property
     def stdin(self):
@@ -149,12 +149,12 @@ class FirstCall(Call):
         self._working_directory = value
 
     @property
-    def extra_environ(self):
-        return self._extra_environ
+    def environ(self):
+        return self._environ
 
-    @extra_environ.setter
-    def extra_environ(self, value):
-        self._extra_environ = value
+    @environ.setter
+    def environ(self, value):
+        self._environ = value
 
 
 class Unchanged:
@@ -167,7 +167,7 @@ UNCHANGED = Unchanged()
 class AlteredCall(Call):
     def __init__(self, base_call, title, positionals=UNCHANGED,
                  flags=UNCHANGED, stdin=UNCHANGED, working_directory=None,
-                 extra_environ=None, description=None, response=None):
+                 environ=None, description=None, response=None):
 
         self.base_call = base_call
         self.diff = {}
@@ -176,7 +176,7 @@ class AlteredCall(Call):
         self.positionals = positionals
         self.flags = flags
         self.working_directory = working_directory
-        self.extra_environ = extra_environ
+        self.environ = environ
 
     def to_dict(self):
         result = dict(title=self.title)
@@ -249,14 +249,14 @@ class AlteredCall(Call):
         del self.diff['working_directory']
 
     @property
-    def extra_environ(self):
-        return self.diff.get('extra_environ', self.base_call.extra_environ)
+    def environ(self):
+        return self.diff.get('environ', self.base_call.environ)
 
-    @extra_environ.setter
-    def extra_environ(self, value):
-        self.update_diff('extra_environ', value)
+    @environ.setter
+    def environ(self, value):
+        self.update_diff('environ', value)
 
-    @extra_environ.deleter
-    def extra_environ(self):
-        del self.diff['extra_environ']
+    @environ.deleter
+    def environ(self):
+        del self.diff['environ']
 
