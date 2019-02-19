@@ -1,0 +1,27 @@
+env:
+  global:
+    - COMMIT_AUTHOR_EMAIL: vahid.mardani@gmail.com
+
+language: python
+
+python:
+  - 3.6
+
+before_install:
+  - pip install -U pip setuptools wheel
+  - pip install -r requirements-dev.txt
+
+install: pip install -e .
+script: py.test --cov=bddcli bddcli/tests
+after_sccess: travis_retry coveralls
+deploy:
+  provider: pypi
+  skip_cleanup: true
+  user: Vahid.Mardani
+  password:
+    secure: #TODO
+  on:
+    tags: true
+    distributions: sdist bdist_wheel
+    repo: Carrene/bddcli
+    all_branches: true
