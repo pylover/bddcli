@@ -40,11 +40,11 @@ class Call(metaclass=ABCMeta):
 
     def invoke(self, application) -> Response:
         return SubprocessRunner(application).run(
-            self.positionals,
-            self.flags,
-            self.stdin,
-            self.working_directory,
-            self.environ
+            positionals=self.positionals,
+            flags=self.flags,
+            stdin=self.stdin,
+            working_directory=self.working_directory,
+            environ=self.environ
         )
 
     def verify(self, application):

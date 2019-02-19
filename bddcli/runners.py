@@ -50,6 +50,7 @@ class SubprocessRunner(Runner):
             stderr=sp.PIPE,
             shell=True,
             encoding='utf8',
+            env=environ,
             cwd=working_directory,
         )
         return Response(result.returncode, result.stdout, result.stderr)
