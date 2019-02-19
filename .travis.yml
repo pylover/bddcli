@@ -9,7 +9,7 @@ before_install:
 - pip install -r requirements-ci.txt
 install: pip install -e .
 script: py.test --cov=bddcli bddcli/tests
-after_sccess: coveralls
+after_success: coveralls
 deploy:
   provider: pypi
   skip_cleanup: true
