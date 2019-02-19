@@ -19,5 +19,5 @@ deploy:
   on:
     tags: true
     distributions: sdist bdist_wheel
-    repo: Carrene/bddcli
+    repo: pylover/bddcli
     all_branches: true
