@@ -29,8 +29,8 @@ class SubprocessRunner(Runner):
         self.application = application
         self.environ = environ
 
-    def run(self, positionals=None, flags=None, stdin=None, extra_environ=None,
-            working_directory=None, **kw) -> Response:
+    def run(self, positionals=None, flags=None, stdin=None,
+            working_directory=None, extra_environ=None, **kw) -> Response:
         command = [
             self.bootstrapper,
             self.application.name,

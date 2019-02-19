@@ -1,7 +1,5 @@
 import sys
 
-import pytest
-
 from bddcli import Command, when, stdout, status, stderr, Application
 
 
