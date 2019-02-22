@@ -31,3 +31,10 @@ def test_list_manipulators():
         with pytest.raises(ValueError):
             when('Append invalid type', positionals=given + {'invalid': 'qux'})
 
+        with pytest.raises(ValueError):
+            when('Update with invalid type', positionals=given | {'bar': 'qux'})
+
+        when('Remove an item', positionals=given - 'bar')
+        assert stderr == 'foo\n'
+
+

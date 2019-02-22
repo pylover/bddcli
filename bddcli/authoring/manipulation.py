@@ -13,7 +13,7 @@ class Manipulator(metaclass=abc.ABCMeta):
         self.dict_diff = kwargs
 
     @abc.abstractmethod
-    def apply(self):  # pragma: no cover
+    def apply(self, container):  # pragma: no cover
         pass
 
 #    def __add__(self, other):
@@ -56,8 +56,8 @@ class Update(Manipulator):
 
 class Remove(Manipulator):
     def apply(self, container):
-        if not isinstance(self.list_diff, list):
-            raise ValueError('Only list is supported for Remove manipulator')
+#        if not isinstance(self.list_diff, list):
+#            raise ValueError('Only list is supported for Remove manipulator')
 
         for k in self.list_diff:
             if k not in container:
