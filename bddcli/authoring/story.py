@@ -1,6 +1,5 @@
 import yaml
 
-from ..documentary import Documenter, MarkdownFormatter
 from ..calls import FirstCall, AlteredCall
 
 
@@ -55,10 +54,6 @@ class Story:
         self.base_call.validate()
         for call in self.calls:
             call.validate()
-
-    def document(self, outfile, formatter_factory=MarkdownFormatter, **kw):
-        documenter = Documenter(formatter_factory, **kw)
-        documenter.document(self, outfile)
 
     @property
     def title(self):
