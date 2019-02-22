@@ -13,7 +13,7 @@ class Manipulator(metaclass=abc.ABCMeta):
         self.dict_diff = kwargs
 
     @abc.abstractmethod
-    def apply(self):
+    def apply(self):  # pragma: no cover
         pass
 
     def __add__(self, other):

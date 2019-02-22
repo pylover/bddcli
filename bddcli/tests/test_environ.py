@@ -21,3 +21,6 @@ def test_environ():
 
         when('Add another variables', environ=given + {'qux': 'quux'})
         assert stdout == 'bar: baz qux: quux\n'
+
+        when('Override existing variables', environ=given | {'bar': 'quux'})
+        assert stdout == 'bar: quux\n'
