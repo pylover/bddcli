@@ -16,14 +16,14 @@ class Manipulator(metaclass=abc.ABCMeta):
     def apply(self):  # pragma: no cover
         pass
 
-    def __add__(self, other):
-        return CompositeManipulator(self) + other
-
-    def __sub__(self, other):
-        return CompositeManipulator(self) - other
-
-    def __or__(self, other):
-        return CompositeManipulator(self) | other
+#    def __add__(self, other):
+#        return CompositeManipulator(self) + other
+#
+#    def __sub__(self, other):
+#        return CompositeManipulator(self) - other
+#
+#    def __or__(self, other):
+#        return CompositeManipulator(self) | other
 
 
 class Append(Manipulator):
