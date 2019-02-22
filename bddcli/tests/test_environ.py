@@ -3,7 +3,7 @@ import os
 from bddcli import Command, stdout, Application, when, given
 
 
-def foo():
+def foo():  # pragma: no cover
     e = os.environ.copy()
     del e['PWD']
     print(' '.join(f'{k}: {v}' for k, v in e.items()))

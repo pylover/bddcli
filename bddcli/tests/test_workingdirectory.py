@@ -3,7 +3,7 @@ import os
 from bddcli import Command, stdout, Application, when
 
 
-def foo():
+def foo():  # pragma: no cover
     print(os.getcwd())
 
 

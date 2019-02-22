@@ -6,7 +6,7 @@ import pytest
 from bddcli import Command, when, stdout, Application, given, stderr
 
 
-def baz():
+def baz():  # pragma: no cover
     e = os.environ.copy()
     del e['PWD']
     print(' '.join(f'{k}: {v}' for k, v in e.items()))

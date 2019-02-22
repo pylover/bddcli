@@ -5,7 +5,7 @@ import pytest
 from bddcli import Command, when, stdout, status, stderr, Application, given
 
 
-def foo():
+def foo():  # pragma: no cover
     print(' '.join(sys.argv))
 
 
