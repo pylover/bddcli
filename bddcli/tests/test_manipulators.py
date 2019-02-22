@@ -37,4 +37,9 @@ def test_list_manipulators():
         when('Remove an item', positionals=given - 'bar')
         assert stderr == 'foo\n'
 
+        with pytest.raises(ValueError):
+            when('Remove a missing item', positionals=given - 'missing')
+
+        when('Append a list', positionals=given + ['baz', 'qux', 'quux'])
+        assert stderr == 'foo bar baz qux quux\n'
 

@@ -56,9 +56,6 @@ class Update(Manipulator):
 
 class Remove(Manipulator):
     def apply(self, container):
-#        if not isinstance(self.list_diff, list):
-#            raise ValueError('Only list is supported for Remove manipulator')
-
         for k in self.list_diff:
             if k not in container:
                 raise ValueError(f'The key: {k} is not exist in the target')
@@ -83,8 +80,6 @@ class CompositeManipulator(Manipulator):
             manipulator = Append(**other)
         elif isinstance(other, list):
             manipulator = Append(*other)
-        elif isinstance(other, Manipulator):
-            manipulator = other
         else:
             manipulator = Append(other)
 
