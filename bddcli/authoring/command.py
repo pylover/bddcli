@@ -39,14 +39,10 @@ class Command(Story, Context):
         return super().__enter__()
 
     def __exit__(self, exc_type, exc_value, traceback):
-        super().__exit__(exc_type, exc_value, traceback)
-        if self.base_call.title is None:
-            return
+        return super().__exit__(exc_type, exc_value, traceback)
 
     @property
     def response(self):
-        if self.current_call is None:
-            return None
         return self.current_call.response
 
 
