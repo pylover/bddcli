@@ -43,3 +43,11 @@ def test_list_manipulators():
         when('Append a list', positionals=given + ['baz', 'qux', 'quux'])
         assert stderr == 'foo bar baz qux quux\n'
 
+        when('Remove list', positionals=given - ['bar'])
+        assert stderr == 'foo\n'
+
+        class InvalidType:
+            pass
+        with pytest.raises(TypeError):
+            when('Remove invalid type', positionals=given - InvalidType())
+

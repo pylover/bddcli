@@ -91,8 +91,6 @@ class CompositeManipulator(Manipulator):
             manipulator = Remove(other)
         elif isinstance(other, Iterable):
             manipulator = Remove(*other)
-        elif isinstance(other, Manipulator):
-            manipulator = other
         else:
             raise TypeError('Only str or an iterable of str will be accepted')
 
