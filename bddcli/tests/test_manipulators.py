@@ -32,7 +32,7 @@ def test_list_manipulators():
             when('Append invalid type', positionals=given + {'invalid': 'qux'})
 
         with pytest.raises(ValueError):
-            when('Update with invalid type', positionals=given | {'bar': 'qux'})
+            when('Update list with dictionary', positionals=given | {'bar': 'qux'})
 
         when('Remove an item', positionals=given - 'bar')
         assert stderr == 'foo\n'
@@ -48,6 +48,10 @@ def test_list_manipulators():
 
         class InvalidType:
             pass
+
         with pytest.raises(TypeError):
             when('Remove invalid type', positionals=given - InvalidType())
+
+        with pytest.raises(TypeError):
+            when('Update with invalid type', positionals=given | InvalidType())
 

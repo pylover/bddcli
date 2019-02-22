@@ -92,7 +92,7 @@ class CompositeManipulator(Manipulator):
         elif isinstance(other, Iterable):
             manipulator = Remove(*other)
         else:
-            raise TypeError('Only str or an iterable of str will be accepted')
+            raise TypeError('Only str or an iterable of str are accepted.')
 
         self.rules.append(manipulator)
         return self
@@ -100,10 +100,8 @@ class CompositeManipulator(Manipulator):
     def __or__(self, other):
         if isinstance(other, dict):
             manipulator = Update(**other)
-        elif isinstance(other, Manipulator):
-            manipulator = other
         else:
-            raise TypeError('Only dict or Manipulator will be accepted')
+            raise TypeError('Only dict is be accepted.')
 
         self.rules.append(manipulator)
         return self
