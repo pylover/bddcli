@@ -1,4 +1,0 @@
-
-class CallVerifyError(Exception):
-    pass
-

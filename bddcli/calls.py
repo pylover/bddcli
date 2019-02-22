@@ -2,7 +2,6 @@ import re
 import sys
 from abc import ABCMeta, abstractmethod
 
-from .exceptions import CallVerifyError
 from .response import Response
 from .runners import SubprocessRunner
 
@@ -12,31 +11,7 @@ class Call(metaclass=ABCMeta):
     def __init__(self, title, description=None, response=None):
         self.title = title
         self.description = description
-        if response is not None and not isinstance(response, Response):
-            response = Response(**response)
         self.response = response
-
-    def to_dict(self):
-        result = dict(
-            title=self.title,
-        )
-
-        if self.stdin is not None:
-            result['stdin'] = self.stdin
-
-        if self.positionals is not None:
-            result['positionals'] = self.positionals
-
-        if self.flags is not None:
-            result['flags'] = self.flags
-
-        if self.working_directory is not None:
-            result['working_directory'] = self.working_directory
-
-        if self.response is not None:
-            result['response'] = self.response.to_dict()
-
-        return result
 
     def invoke(self, application) -> Response:
         return SubprocessRunner(application).run(
@@ -46,11 +21,6 @@ class Call(metaclass=ABCMeta):
             working_directory=self.working_directory,
             environ=self.environ
         )
-
-    def verify(self, application):
-        response = self.invoke(application)
-        if self.response != response:
-            raise CallVerifyError()
 
     def conclude(self, application):
         if self.response is None:
@@ -177,18 +147,6 @@ class AlteredCall(Call):
         self.flags = flags
         self.working_directory = working_directory
         self.environ = environ
-
-    def to_dict(self):
-        result = dict(title=self.title)
-        result.update(self.diff)
-
-        if self.description is not None:
-            result['description'] = self.description
-
-        if self.response is not None:
-            result['response'] = self.response.to_dict()
-
-        return result
 
     def update_diff(self, key, value):
         if value is UNCHANGED:
