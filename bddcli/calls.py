@@ -163,10 +163,6 @@ class AlteredCall(Call):
     def stdin(self, value):
         self.update_diff('stdin', value)
 
-    @stdin.deleter
-    def stdin(self):
-        del self.diff['stdin']
-
     @property
     def positionals(self):
         return self.diff.get('positionals', self.base_call.positionals)
@@ -175,10 +171,6 @@ class AlteredCall(Call):
     def positionals(self, value):
         self.update_diff('positionals', value)
 
-    @positionals.deleter
-    def positionals(self):
-        del self.diff['positionals']
-
     @property
     def flags(self):
         return self.diff.get('flags', self.base_call.flags)
@@ -186,10 +178,6 @@ class AlteredCall(Call):
     @flags.setter
     def flags(self, value):
         self.update_diff('flags', value)
-
-    @flags.deleter
-    def flags(self):
-        del self.diff['flags']
 
     @property
     def working_directory(self):
@@ -202,10 +190,6 @@ class AlteredCall(Call):
     def working_directory(self, value):
         self.update_diff('working_directory', value)
 
-    @working_directory.deleter
-    def working_directory(self):
-        del self.diff['working_directory']
-
     @property
     def environ(self):
         return self.diff.get('environ', self.base_call.environ)
@@ -213,8 +197,4 @@ class AlteredCall(Call):
     @environ.setter
     def environ(self, value):
         self.update_diff('environ', value)
-
-    @environ.deleter
-    def environ(self):
-        del self.diff['environ']
 
