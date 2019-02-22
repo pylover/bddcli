@@ -1,4 +1,4 @@
-class ObjectProxy:
+class ObjectProxy:  # pragma: no cover
     """
     A simple object proxy to let deferred object's initialize later
     (for example: just after import): This class encapsulates some tricky
