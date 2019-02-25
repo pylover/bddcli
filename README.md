@@ -20,7 +20,7 @@ pip install bddcli
 
 ## Quickstart
 
-### Positional arguments and flags
+### Arguments
 
 ```python
 import sys
@@ -36,19 +36,15 @@ def foo():
 app = Application('foo', 'mymodule:foo')
 
 
-with Command(app, 'Pass single positional argument', positionals=['bar']):
+with Command(app, 'Pass single positional argument', arguments=['bar']):
     assert status == 0
     assert stdout == 'foo bar\n'
 
-    when('Without any argument', positionals=given - 'bar')
+    when('Without any argument', arguments=given - 'bar')
     assert stdout == 'foo\n'
 
-    when('Pass multiple arguments', positionals=given + 'baz')
+    when('Pass multiple arguments', arguments=given + 'baz')
     assert stdout == 'foo bar baz\n'
-
-
-with Command(app, 'Pass flag', flags=['--bar=baz']):
-    assert stdout == 'foo --bar=baz\n'
 
 ```
 
