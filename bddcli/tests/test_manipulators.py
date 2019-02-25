@@ -25,33 +25,33 @@ def test_dict_manipulators():
 
 
 def test_list_manipulators():
-    with Command(app, 'Test list manipulators', positionals=['bar']):
+    with Command(app, 'Test list manipulators', arguments=['bar']):
         assert stderr == 'foo bar\n'
 
         with pytest.raises(ValueError):
-            when('Append invalid type', positionals=given + {'invalid': 'qux'})
+            when('Append invalid type', arguments=given + {'invalid': 'qux'})
 
         with pytest.raises(ValueError):
-            when('Update list with dictionary', positionals=given | {'bar': 'qux'})
+            when('Update list with dictionary', arguments=given | {'bar': 'qux'})
 
-        when('Remove an item', positionals=given - 'bar')
+        when('Remove an item', arguments=given - 'bar')
         assert stderr == 'foo\n'
 
         with pytest.raises(ValueError):
-            when('Remove a missing item', positionals=given - 'missing')
+            when('Remove a missing item', arguments=given - 'missing')
 
-        when('Append a list', positionals=given + ['baz', 'qux', 'quux'])
+        when('Append a list', arguments=given + ['baz', 'qux', 'quux'])
         assert stderr == 'foo bar baz qux quux\n'
 
-        when('Remove list', positionals=given - ['bar'])
+        when('Remove list', arguments=given - ['bar'])
         assert stderr == 'foo\n'
 
         class InvalidType:
             pass
 
         with pytest.raises(TypeError):
-            when('Remove invalid type', positionals=given - InvalidType())
+            when('Remove invalid type', arguments=given - InvalidType())
 
         with pytest.raises(TypeError):
-            when('Update with invalid type', positionals=given | InvalidType())
+            when('Update with invalid type', arguments=given | InvalidType())
 

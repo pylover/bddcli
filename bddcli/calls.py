@@ -15,8 +15,7 @@ class Call(metaclass=ABCMeta):
 
     def invoke(self, application) -> Response:
         return SubprocessRunner(application).run(
-            positionals=self.positionals,
-            flags=self.flags,
+            arguments=self.arguments,
             stdin=self.stdin,
             working_directory=self.working_directory,
             environ=self.environ
@@ -38,22 +37,12 @@ class Call(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def positionals(self) -> str:  # pragma: no cover
+    def arguments(self) -> str:  # pragma: no cover
         pass
 
-    @positionals.setter
+    @arguments.setter
     @abstractmethod
-    def positionals(self, value):  # pragma: no cover
-        pass
-
-    @property
-    @abstractmethod
-    def flags(self) -> dict:  # pragma: no cover
-        pass
-
-    @flags.setter
-    @abstractmethod
-    def flags(self, value):  # pragma: no cover
+    def arguments(self, value):  # pragma: no cover
         pass
 
     @property
@@ -70,19 +59,17 @@ class Call(metaclass=ABCMeta):
 class FirstCall(Call):
 
     _stdin = None
-    _positionals = None
-    _flags = None
+    _arguments = None
     _environ = None
     _working_directory = None
 
-    def __init__(self, title, positionals=None, flags=None, stdin=None,
+    def __init__(self, title, arguments=None, stdin=None,
                  working_directory=None, environ=None, description=None,
                  response=None):
 
         super().__init__(title, description=description, response=response)
         self.stdin = stdin
-        self.positionals = positionals
-        self.flags = flags
+        self.arguments = arguments
         self.working_directory = working_directory
         self.environ = environ
 
@@ -95,20 +82,12 @@ class FirstCall(Call):
         self._stdin = value
 
     @property
-    def positionals(self):
-        return self._positionals
+    def arguments(self):
+        return self._arguments
 
-    @positionals.setter
-    def positionals(self, value):
-        self._positionals = value
-
-    @property
-    def flags(self):
-        return self._flags
-
-    @flags.setter
-    def flags(self, value):
-        self._flags = value
+    @arguments.setter
+    def arguments(self, value):
+        self._arguments = value
 
     @property
     def working_directory(self):
@@ -135,16 +114,15 @@ UNCHANGED = Unchanged()
 
 
 class AlteredCall(Call):
-    def __init__(self, base_call, title, positionals=UNCHANGED,
-                 flags=UNCHANGED, stdin=UNCHANGED, working_directory=None,
+    def __init__(self, base_call, title, arguments=UNCHANGED,
+                 stdin=UNCHANGED, working_directory=None,
                  environ=None, description=None, response=None):
 
         self.base_call = base_call
         self.diff = {}
         super().__init__(title, description=description, response=response)
         self.stdin = stdin
-        self.positionals = positionals
-        self.flags = flags
+        self.arguments = arguments
         self.working_directory = working_directory
         self.environ = environ
 
@@ -164,20 +142,12 @@ class AlteredCall(Call):
         self.update_diff('stdin', value)
 
     @property
-    def positionals(self):
-        return self.diff.get('positionals', self.base_call.positionals)
+    def arguments(self):
+        return self.diff.get('arguments', self.base_call.arguments)
 
-    @positionals.setter
-    def positionals(self, value):
-        self.update_diff('positionals', value)
-
-    @property
-    def flags(self):
-        return self.diff.get('flags', self.base_call.flags)
-
-    @flags.setter
-    def flags(self, value):
-        self.update_diff('flags', value)
+    @arguments.setter
+    def arguments(self, value):
+        self.update_diff('arguments', value)
 
     @property
     def working_directory(self):

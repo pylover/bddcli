@@ -9,7 +9,7 @@ from .response import Response
 
 class Runner(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def run(self, positionals=None, flags=None, stdin=None,
+    def run(self, arguments=None, stdin=None,
             environ=None, **kw) -> Response:  # pragma: no cover
         pass
 
@@ -30,7 +30,7 @@ class SubprocessRunner(Runner):
         self.application = application
         self.environ = environ
 
-    def run(self, positionals=None, flags=None, stdin=None,
+    def run(self, arguments=None, stdin=None,
             working_directory=None, environ=None, **kw) -> Response:
         command = [
             self.bootstrapper,
@@ -38,11 +38,8 @@ class SubprocessRunner(Runner):
             self.application.address,
         ]
 
-        if flags:
-            command += flags
-
-        if positionals:
-            command += positionals
+        if arguments:
+            command += arguments
 
         result = sp.run(
             ' '.join(command),
