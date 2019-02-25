@@ -1,2 +1,2 @@
-pytest-cov
+-r requirements-ci.txt
 pytest-pudb

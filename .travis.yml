@@ -1,27 +1,23 @@
 env:
   global:
-    - COMMIT_AUTHOR_EMAIL: vahid.mardani@gmail.com
-
+  - COMMIT_AUTHOR_EMAIL: vahid.mardani@gmail.com
 language: python
-
 python:
-  - 3.6
-
+- 3.6
 before_install:
-  - pip install -U pip setuptools wheel
-  - pip install -r requirements-dev.txt
-
+- pip install -U pip setuptools wheel
+- pip install -r requirements-ci.txt
 install: pip install -e .
 script: py.test --cov=bddcli bddcli/tests
-after_sccess: travis_retry coveralls
+after_success: coveralls
 deploy:
   provider: pypi
   skip_cleanup: true
   user: Vahid.Mardani
   password:
-    secure: #TODO
+    secure: O/fSJmDJ9gTYNpzk1xVh3DAmLGjq5dC1dj2mPUzhvj4TwPUqZaZrDosg8OLSev7CQXR5thfGnzXFCjjHJq+1siDo8PRbWzsYDXTGXnmlE0RhnxwR5nMjkXfaq7dC5e6m1E4iKicPocMG0/tQEv07JVIKbpoS041vD1yGX6uVJseQOacFWgIQI4cqQfgcOEPuvmOD/AP6oYh1bDFtcYFLkE7b6G8Y1ElJ6+ukhI2oWM29SW0bAhN4J31+O5L6+lVqiuFDWG5/iV08ievtJ4ZMx4ULA+3UL1LUhT6DXfC48Nj9ZfW9yHwfdqm0gk4MZ1VAWh62bG7hN9mWu2ZHSruGWhjQ7DgulfQFEgAoYSBRQOkQFhSqL2Doh62t6lKkFynxGk7hrE5tkYEY1z8I0EfCJrVOFKWVibkl5n3uQJ4mzalDOIg0dPia79Y2Qaf/v1HVy7tKDUmWDNLwIhThjDY+SPNH14+BHDbAJn55Bvk6pVwizXZ+h0vxZrn3Gnw5q72aA0+4F9EkVsp+yDsM7kemri060Ky8H8CP/3YnGTKmzmggZX9fQIuB8APweLbws3xgekIkkki29XX7LnOXm5PT4ocYKyZ8XQVCOHm9vMMmZi4IkBXBEIr626HzJ8Wu3jYNxQ5QVJR3pb6m1guC1+FgeQ94CnIsUxUVxyrMqfIci6I=
   on:
     tags: true
     distributions: sdist bdist_wheel
-    repo: Carrene/bddcli
+    repo: pylover/bddcli
     all_branches: true

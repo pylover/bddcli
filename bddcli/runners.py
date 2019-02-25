@@ -10,7 +10,7 @@ from .response import Response
 class Runner(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def run(self, positionals=None, flags=None, stdin=None,
-            environ=None, **kw) -> Response:
+            environ=None, **kw) -> Response:  # pragma: no cover
         pass
 
 
@@ -21,16 +21,17 @@ class SubprocessRunner(Runner):
         bootstrapper = 'bddcli-bootstrapper'
         if 'VIRTUAL_ENV' in os.environ:
             bindir = path.join(os.environ['VIRTUAL_ENV'], 'bin')
-        else:
+        else:  # pragma: no cover
             bindir = '/usr/local/bin'
+
         return path.join(bindir, bootstrapper)
 
     def __init__(self, application, environ=None):
         self.application = application
         self.environ = environ
 
-    def run(self, positionals=None, flags=None, stdin=None, extra_environ=None,
-            working_directory=None, **kw) -> Response:
+    def run(self, positionals=None, flags=None, stdin=None,
+            working_directory=None, environ=None, **kw) -> Response:
         command = [
             self.bootstrapper,
             self.application.name,
@@ -50,6 +51,7 @@ class SubprocessRunner(Runner):
             stderr=sp.PIPE,
             shell=True,
             encoding='utf8',
+            env=environ,
             cwd=working_directory,
         )
         return Response(result.returncode, result.stdout, result.stderr)

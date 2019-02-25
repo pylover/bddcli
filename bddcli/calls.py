@@ -2,7 +2,6 @@ import re
 import sys
 from abc import ABCMeta, abstractmethod
 
-from .exceptions import CallVerifyError
 from .response import Response
 from .runners import SubprocessRunner
 
@@ -12,41 +11,16 @@ class Call(metaclass=ABCMeta):
     def __init__(self, title, description=None, response=None):
         self.title = title
         self.description = description
-        if response is not None and not isinstance(response, Response):
-            response = Response(**response)
         self.response = response
-
-    def to_dict(self):
-        result = dict(
-            title=self.title,
-        )
-
-        if self.stdin is not None:
-            result['stdin'] = self.stdin
-
-        if self.positionals is not None:
-            result['positionals'] = self.positionals
-
-        if self.flags is not None:
-            result['flags'] = self.flags
-
-        if self.response is not None:
-            result['response'] = self.response.to_dict()
-
-        return result
 
     def invoke(self, application) -> Response:
         return SubprocessRunner(application).run(
-            self.positionals,
-            self.flags,
-            self.stdin,
-            self.extra_environ
+            positionals=self.positionals,
+            flags=self.flags,
+            stdin=self.stdin,
+            working_directory=self.working_directory,
+            environ=self.environ
         )
-
-    def verify(self, application):
-        response = self.invoke(application)
-        if self.response != response:
-            raise CallVerifyError()
 
     def conclude(self, application):
         if self.response is None:
@@ -84,12 +58,12 @@ class Call(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def extra_environ(self) -> dict:  # pragma: no cover
+    def environ(self) -> dict:  # pragma: no cover
         pass
 
-    @extra_environ.setter
+    @environ.setter
     @abstractmethod
-    def extra_environ(self, value):  # pragma: no cover
+    def environ(self, value):  # pragma: no cover
         pass
 
 
@@ -98,16 +72,19 @@ class FirstCall(Call):
     _stdin = None
     _positionals = None
     _flags = None
-    _extra_environ = None
+    _environ = None
+    _working_directory = None
 
     def __init__(self, title, positionals=None, flags=None, stdin=None,
-                 extra_environ=None, description=None, response=None):
+                 working_directory=None, environ=None, description=None,
+                 response=None):
 
         super().__init__(title, description=description, response=response)
         self.stdin = stdin
         self.positionals = positionals
         self.flags = flags
-        self.extra_environ = extra_environ
+        self.working_directory = working_directory
+        self.environ = environ
 
     @property
     def stdin(self):
@@ -134,12 +111,20 @@ class FirstCall(Call):
         self._flags = value
 
     @property
-    def extra_environ(self):
-        return self._extra_environ
+    def working_directory(self):
+        return self._working_directory
 
-    @extra_environ.setter
-    def extra_environ(self, value):
-        self._extra_environ = value
+    @working_directory.setter
+    def working_directory(self, value):
+        self._working_directory = value
+
+    @property
+    def environ(self):
+        return self._environ
+
+    @environ.setter
+    def environ(self, value):
+        self._environ = value
 
 
 class Unchanged:
@@ -150,10 +135,9 @@ UNCHANGED = Unchanged()
 
 
 class AlteredCall(Call):
-
     def __init__(self, base_call, title, positionals=UNCHANGED,
-                 flags=UNCHANGED, stdin=UNCHANGED, extra_environ=None,
-                 description=None, response: Response=None):
+                 flags=UNCHANGED, stdin=UNCHANGED, working_directory=None,
+                 environ=None, description=None, response=None):
 
         self.base_call = base_call
         self.diff = {}
@@ -161,19 +145,8 @@ class AlteredCall(Call):
         self.stdin = stdin
         self.positionals = positionals
         self.flags = flags
-        self.extra_environ = extra_environ
-
-    def to_dict(self):
-        result = dict(title=self.title)
-        result.update(self.diff)
-
-        if self.description is not None:
-            result['description'] = self.description
-
-        if self.response is not None:
-            result['response'] = self.response.to_dict()
-
-        return result
+        self.working_directory = working_directory
+        self.environ = environ
 
     def update_diff(self, key, value):
         if value is UNCHANGED:
@@ -190,10 +163,6 @@ class AlteredCall(Call):
     def stdin(self, value):
         self.update_diff('stdin', value)
 
-    @stdin.deleter
-    def stdin(self):
-        del self.diff['stdin']
-
     @property
     def positionals(self):
         return self.diff.get('positionals', self.base_call.positionals)
@@ -201,10 +170,6 @@ class AlteredCall(Call):
     @positionals.setter
     def positionals(self, value):
         self.update_diff('positionals', value)
-
-    @positionals.deleter
-    def positionals(self):
-        del self.diff['positionals']
 
     @property
     def flags(self):
@@ -214,19 +179,22 @@ class AlteredCall(Call):
     def flags(self, value):
         self.update_diff('flags', value)
 
-    @flags.deleter
-    def flags(self):
-        del self.diff['flags']
+    @property
+    def working_directory(self):
+        return self.diff.get(
+            'working_directory',
+            self.base_call.working_directory
+        )
+
+    @working_directory.setter
+    def working_directory(self, value):
+        self.update_diff('working_directory', value)
 
     @property
-    def extra_environ(self):
-        return self.diff.get('extra_environ', self.base_call.extra_environ)
+    def environ(self):
+        return self.diff.get('environ', self.base_call.environ)
 
-    @extra_environ.setter
-    def extra_environ(self, value):
-        self.update_diff('extra_environ', value)
-
-    @extra_environ.deleter
-    def extra_environ(self):
-        del self.diff['extra_environ']
+    @environ.setter
+    def environ(self, value):
+        self.update_diff('environ', value)
 

@@ -6,11 +6,8 @@ from .manipulation import Manipulator
 
 class Command(Story, Context):
 
-    def __init__(self, application, *args, autodump=None, autodoc=None,
-                 fieldinfo=None, **kwargs):
+    def __init__(self, application, *args, **kwargs):
         self.application = application
-        self.autodump = autodump
-        self.autodoc = autodoc
         base_call = FirstCall(*args, **kwargs)
         base_call.conclude(application)
         super().__init__(base_call)
@@ -42,32 +39,10 @@ class Command(Story, Context):
         return super().__enter__()
 
     def __exit__(self, exc_type, exc_value, traceback):
-        super().__exit__(exc_type, exc_value, traceback)
-        if self.base_call.title is None:
-            return
-
-        if self.autodump:
-            if hasattr(self.autodump, 'write'):
-                self.dump(self.autodump)
-            else:
-                filename = self.autodump(self) if callable(self.autodump) \
-                    else self.autodump
-                with open(filename, mode='w', encoding='utf-8') as f:
-                    self.dump(f)
-
-        if self.autodoc:
-            if hasattr(self.autodoc, 'write'):
-                self.dump(self.autodoc)
-            else:
-                filename = self.autodoc(self) if callable(self.autodoc) else \
-                    self.autodoc
-                with open(filename, mode='w', encoding='utf-8') as f:
-                    self.document(f, fieldinfo=self.fieldinfo)
+        return super().__exit__(exc_type, exc_value, traceback)
 
     @property
     def response(self):
-        if self.current_call is None:
-            return None
         return self.current_call.response
 
 

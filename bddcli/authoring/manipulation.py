@@ -13,17 +13,8 @@ class Manipulator(metaclass=abc.ABCMeta):
         self.dict_diff = kwargs
 
     @abc.abstractmethod
-    def apply(self):
+    def apply(self, container):  # pragma: no cover
         pass
-
-    def __add__(self, other):
-        return CompositeManipulator(self) + other
-
-    def __sub__(self, other):
-        return CompositeManipulator(self) - other
-
-    def __or__(self, other):
-        return CompositeManipulator(self) | other
 
 
 class Append(Manipulator):
@@ -56,9 +47,6 @@ class Update(Manipulator):
 
 class Remove(Manipulator):
     def apply(self, container):
-        if not isinstance(self.list_diff, list):
-            raise ValueError('Only list is supported for Remove manipulator')
-
         for k in self.list_diff:
             if k not in container:
                 raise ValueError(f'The key: {k} is not exist in the target')
@@ -83,8 +71,6 @@ class CompositeManipulator(Manipulator):
             manipulator = Append(**other)
         elif isinstance(other, list):
             manipulator = Append(*other)
-        elif isinstance(other, Manipulator):
-            manipulator = other
         else:
             manipulator = Append(other)
 
@@ -96,10 +82,8 @@ class CompositeManipulator(Manipulator):
             manipulator = Remove(other)
         elif isinstance(other, Iterable):
             manipulator = Remove(*other)
-        elif isinstance(other, Manipulator):
-            manipulator = other
         else:
-            raise TypeError('Only str or an iterable of str will be accepted')
+            raise TypeError('Only str or an iterable of str are accepted.')
 
         self.rules.append(manipulator)
         return self
@@ -107,10 +91,8 @@ class CompositeManipulator(Manipulator):
     def __or__(self, other):
         if isinstance(other, dict):
             manipulator = Update(**other)
-        elif isinstance(other, Manipulator):
-            manipulator = other
         else:
-            raise TypeError('Only dict or Manipulator will be accepted')
+            raise TypeError('Only dict is be accepted.')
 
         self.rules.append(manipulator)
         return self

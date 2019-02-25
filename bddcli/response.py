@@ -9,16 +9,3 @@ class Response:
         self.stdout = stdout
         self.stderr = stderr
 
-    def to_dict(self):
-        return dict(
-            status=self.status,
-            stdout=self.stdout,
-            stderr=self.stderr
-        )
-
-    def __eq__(self, other: 'Response'):
-        return self.status == other.status \
-                and self.stdout == other.stdout \
-                and self.stdout == other.stdout
-
-

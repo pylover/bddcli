@@ -1,11 +1,9 @@
 import sys
 
-import pytest
-
 from bddcli import Command, when, stdout, status, stderr, Application
 
 
-def foo():
+def foo():  # pragma: no cover
     stdin = sys.stdin.read()
     if stdin == 'bad':
         print(f'error: {stdin}', file=sys.stderr)
