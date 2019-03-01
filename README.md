@@ -25,7 +25,7 @@ pip install bddcli
 ```python
 import sys
 
-from bddcli import Command, when, stdout, status, stderr, Application, given
+from bddcli import Given, when, stdout, status, stderr, Application, given
 
 
 def foo():
@@ -36,7 +36,7 @@ def foo():
 app = Application('foo', 'mymodule:foo')
 
 
-with Command(app, 'Pass single positional argument', arguments=['bar']):
+with Given(app, 'Pass single positional argument', arguments=['bar']):
     assert status == 0
     assert stdout == 'foo bar\n'
 
@@ -52,7 +52,7 @@ with Command(app, 'Pass single positional argument', arguments=['bar']):
 ### Standard input
 
 ```python
-with Command(app, 'Pass stdin', stdin='foo'):
+with Given(app, 'Pass stdin', stdin='foo'):
     assert ...
 
     when('stdin is empty', stdin='')
@@ -75,7 +75,7 @@ assert stdout == ...
 ```python
 import os
 
-from bddcli import Command, stdout, Application, when, given
+from bddcli import Given, stdout, Application, when, given
 
 
 def foo():
@@ -85,7 +85,7 @@ def foo():
 
 
 app = Application('foo', 'mymodule:foo')
-with Command(app, 'Environment variables', environ={'bar': 'baz'}):
+with Given(app, 'Environment variables', environ={'bar': 'baz'}):
     assert stdout == 'bar: baz\n'
 
     when('Without any variable', environ=given - 'bar')

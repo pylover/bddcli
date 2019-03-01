@@ -4,7 +4,7 @@ from .story import Story
 from .manipulation import Manipulator
 
 
-class Command(Story, Context):
+class Given(Story, Context):
 
     def __init__(self, application, *args, **kwargs):
         self.application = application

@@ -1,6 +1,6 @@
 import os
 
-from bddcli import Command, stdout, Application, when
+from bddcli import Given, stdout, Application, when
 
 
 def foo():  # pragma: no cover
@@ -11,7 +11,7 @@ app = Application('foo', 'bddcli.tests.test_workingdirectory:foo')
 
 
 def test_working_directory():
-    with Command(app):
+    with Given(app):
         assert f'{os.getcwd()}\n' == stdout
 
         when(working_directory='/tmp')

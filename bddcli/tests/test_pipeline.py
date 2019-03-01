@@ -1,6 +1,6 @@
 import sys
 
-from bddcli import Command, when, stdout, status, stderr, Application
+from bddcli import Given, when, stdout, status, stderr, Application
 
 
 def foo():  # pragma: no cover
@@ -14,7 +14,7 @@ def foo():  # pragma: no cover
 
 def test_basic_pipeline():
     app = Application('foo', 'bddcli.tests.test_pipeline:foo')
-    with Command(app):
+    with Given(app):
         assert status == 0
         assert stdout == ''
         assert stderr == ''

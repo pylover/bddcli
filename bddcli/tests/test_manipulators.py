@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from bddcli import Command, when, stdout, Application, given, stderr
+from bddcli import Given, when, stdout, Application, given, stderr
 
 
 def baz():  # pragma: no cover
@@ -17,7 +17,7 @@ app = Application('foo', 'bddcli.tests.test_manipulators:baz')
 
 
 def test_dict_manipulators():
-    with Command(app, environ={'bar': 'baz'}):
+    with Given(app, environ={'bar': 'baz'}):
         assert stdout == 'bar: baz\n'
 
         with pytest.raises(ValueError):
@@ -25,7 +25,7 @@ def test_dict_manipulators():
 
 
 def test_list_manipulators():
-    with Command(app, arguments=['bar']):
+    with Given(app, arguments=['bar']):
         assert stderr == 'foo bar\n'
 
         with pytest.raises(ValueError):

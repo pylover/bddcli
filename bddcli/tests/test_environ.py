@@ -1,6 +1,6 @@
 import os
 
-from bddcli import Command, stdout, Application, when, given
+from bddcli import Given, stdout, Application, when, given
 
 
 def foo():  # pragma: no cover
@@ -13,7 +13,7 @@ app = Application('foo', 'bddcli.tests.test_environ:foo')
 
 
 def test_environ():
-    with Command(app, environ={'bar': 'baz'}):
+    with Given(app, environ={'bar': 'baz'}):
         assert stdout == 'bar: baz\n'
 
         when(environ=given - 'bar')

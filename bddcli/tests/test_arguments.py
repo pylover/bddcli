@@ -2,7 +2,7 @@ import sys
 
 import pytest
 
-from bddcli import Command, when, stdout, status, stderr, Application, given
+from bddcli import Given, given, when, stdout, status, stderr, Application
 
 
 def foo():  # pragma: no cover
@@ -13,7 +13,7 @@ app = Application('foo', 'bddcli.tests.test_arguments:foo')
 
 
 def test_arguments():
-    with Command(app, arguments=['bar']):
+    with Given(app, arguments=['bar']):
         assert stdout == 'foo bar\n'
 
         when(arguments=given - 'bar')
