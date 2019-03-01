@@ -25,33 +25,33 @@ def test_dict_manipulators():
 
 
 def test_list_manipulators():
-    with Given(app, arguments=['bar']):
+    with Given(app, ['bar']):
         assert stderr == 'foo bar\n'
 
         with pytest.raises(ValueError):
-            when(arguments=given + {'invalid': 'qux'})
+            when(given + {'invalid': 'qux'})
 
         with pytest.raises(ValueError):
-            when(arguments=given | {'bar': 'qux'})
+            when(given | {'bar': 'qux'})
 
-        when(arguments=given - 'bar')
+        when(given - 'bar')
         assert stderr == 'foo\n'
 
         with pytest.raises(ValueError):
-            when(arguments=given - 'missing')
+            when(given - 'missing')
 
-        when(arguments=given + ['baz', 'qux', 'quux'])
+        when(given + ['baz', 'qux', 'quux'])
         assert stderr == 'foo bar baz qux quux\n'
 
-        when(arguments=given - ['bar'])
+        when(given - ['bar'])
         assert stderr == 'foo\n'
 
         class InvalidType:
             pass
 
         with pytest.raises(TypeError):
-            when(arguments=given - InvalidType())
+            when(given - InvalidType())
 
         with pytest.raises(TypeError):
-            when(arguments=given | InvalidType())
+            when(given | InvalidType())
 

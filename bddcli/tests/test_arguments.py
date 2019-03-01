@@ -13,12 +13,12 @@ app = Application('foo', 'bddcli.tests.test_arguments:foo')
 
 
 def test_arguments():
-    with Given(app, arguments=['bar']):
+    with Given(app, ['bar']):
         assert stdout == 'foo bar\n'
 
-        when(arguments=given - 'bar')
+        when(given - 'bar')
         assert stdout == 'foo\n'
 
-        when(arguments=given + 'baz')
+        when(given + 'baz')
         assert stdout == 'foo bar baz\n'
 

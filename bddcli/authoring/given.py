@@ -23,6 +23,10 @@ class Given(Story, Context):
 
         # Checking for list manipulators if any
         # Checking for dictionary manipulators if any
+        args = list(args)
+        if args:
+            kwargs['arguments'] = args.pop(0)
+
         for k, v in kwargs.items():
             if isinstance(v, Manipulator):
                 clone = getattr(self.base_call, k).copy()
@@ -33,6 +37,7 @@ class Given(Story, Context):
         new_call.conclude(self.application)
         if record:
             self.calls.append(new_call)
+
         return new_call
 
     def __enter__(self):
