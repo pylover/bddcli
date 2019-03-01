@@ -13,14 +13,14 @@ app = Application('foo', 'bddcli.tests.test_environ:foo')
 
 
 def test_environ():
-    with Command(app, 'Environment variables', environ={'bar': 'baz'}):
+    with Command(app, environ={'bar': 'baz'}):
         assert stdout == 'bar: baz\n'
 
-        when('Without any variable', environ=given - 'bar')
+        when(environ=given - 'bar')
         assert stdout == '\n'
 
-        when('Add another variables', environ=given + {'qux': 'quux'})
+        when(environ=given + {'qux': 'quux'})
         assert stdout == 'bar: baz qux: quux\n'
 
-        when('Override existing variables', environ=given | {'bar': 'quux'})
+        when(environ=given | {'bar': 'quux'})
         assert stdout == 'bar: quux\n'

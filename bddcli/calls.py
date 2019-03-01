@@ -8,8 +8,7 @@ from .runners import SubprocessRunner
 
 class Call(metaclass=ABCMeta):
 
-    def __init__(self, title, description=None, response=None):
-        self.title = title
+    def __init__(self, description=None, response=None):
         self.description = description
         self.response = response
 
@@ -63,11 +62,11 @@ class FirstCall(Call):
     _environ = None
     _working_directory = None
 
-    def __init__(self, title, arguments=None, stdin=None,
+    def __init__(self, arguments=None, stdin=None,
                  working_directory=None, environ=None, description=None,
                  response=None):
 
-        super().__init__(title, description=description, response=response)
+        super().__init__(description=description, response=response)
         self.stdin = stdin
         self.arguments = arguments
         self.working_directory = working_directory
@@ -114,13 +113,13 @@ UNCHANGED = Unchanged()
 
 
 class AlteredCall(Call):
-    def __init__(self, base_call, title, arguments=UNCHANGED,
+    def __init__(self, base_call, arguments=UNCHANGED,
                  stdin=UNCHANGED, working_directory=None,
                  environ=None, description=None, response=None):
 
         self.base_call = base_call
         self.diff = {}
-        super().__init__(title, description=description, response=response)
+        super().__init__(description=description, response=response)
         self.stdin = stdin
         self.arguments = arguments
         self.working_directory = working_directory
