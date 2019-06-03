@@ -47,7 +47,7 @@ class SubprocessRunner(Runner):
             stdout=sp.PIPE,
             stderr=sp.PIPE,
             shell=True,
-            encoding='utf8',
+            encoding=None if isinstance(stdin, bytes) else 'UTF-8',
             env=environ,
             cwd=working_directory,
         )
