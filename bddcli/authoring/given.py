@@ -25,7 +25,11 @@ class Given(Story, Context):
         # Checking for dictionary manipulators if any
         args = list(args)
         if args:
-            kwargs['arguments'] = args.pop(0)
+            arguments = args.pop(0)
+            if isinstance(arguments, str):
+                arguments = arguments.split(' ')
+
+            kwargs['arguments'] = arguments
 
         for k, v in kwargs.items():
             if isinstance(v, Manipulator):

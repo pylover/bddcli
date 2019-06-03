@@ -68,7 +68,8 @@ class FirstCall(Call):
 
         super().__init__(description=description, response=response)
         self.stdin = stdin
-        self.arguments = arguments
+        self.arguments = \
+            arguments.split(' ') if isinstance(arguments, str) else arguments
         self.working_directory = working_directory
         self.environ = environ
 

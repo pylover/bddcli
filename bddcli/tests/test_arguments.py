@@ -22,3 +22,9 @@ def test_arguments():
         when(given + 'baz')
         assert stdout == 'foo bar baz\n'
 
+    with Given(app, 'bar'):
+        assert stdout == 'foo bar\n'
+
+        when('baz')
+        assert stdout == 'foo baz\n'
+

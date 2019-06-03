@@ -36,14 +36,20 @@ def foo():
 app = Application('foo', 'mymodule:foo')
 
 
-with Given(app, 'Pass single positional argument', ['bar']):
+with Given(app, 'Pass single positional argument', 'bar'):
     assert status == 0
     assert stdout == 'foo bar\n'
 
     when('Without any argument', given - 'bar')
     assert stdout == 'foo\n'
 
-    when('Pass multiple arguments', given + 'baz')
+    when('Pass multiple arguments', 'bar baz')
+    assert stdout == 'foo bar baz\n'
+
+    when('Pass multiple arguments, another method', ['bar', 'baz'])
+    assert stdout == 'foo bar baz\n'
+
+    when('Add an argument', given + 'baz')
     assert stdout == 'foo bar baz\n'
 
 ```
