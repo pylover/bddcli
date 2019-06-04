@@ -64,3 +64,6 @@ class ObjectProxy:  # pragma: no cover
     def __repr__(self):
         return self.proxied_object.__repr__()
 
+    def __len__(self):
+        return len(self.proxied_object)
+
