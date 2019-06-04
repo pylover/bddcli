@@ -28,3 +28,9 @@ def test_arguments():
         when('baz')
         assert stdout == 'foo baz\n'
 
+    # Given without arguments
+    with Given(app):
+
+        # Then, when with the given
+        when(given + 'qux')
+        assert stdout == 'foo qux\n'

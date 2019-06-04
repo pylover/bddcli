@@ -33,7 +33,11 @@ class Given(Story, Context):
 
         for k, v in kwargs.items():
             if isinstance(v, Manipulator):
-                clone = getattr(self.base_call, k).copy()
+                base_arguments = getattr(self.base_call, k)
+                if base_arguments:
+                    clone = base_arguments.copy()
+                else:
+                    clone = []
                 v.apply(clone)
                 kwargs[k] = clone
 
