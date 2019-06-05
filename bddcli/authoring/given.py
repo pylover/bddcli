@@ -48,14 +48,5 @@ class Given(Story, Context):
 
         return new_call
 
-    def __enter__(self):
-        return super().__enter__()
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        return super().__exit__(exc_type, exc_value, traceback)
-
-    @property
-    def response(self):
-        return self.current_call.response
 
 

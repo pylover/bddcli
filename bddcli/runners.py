@@ -48,7 +48,5 @@ class SubprocessRunner(Runner):
             env=environ,
             cwd=working_directory,
         )
-        stdout, stderr = process.communicate(input=stdin)
-
-        return stdout, stderr, process
+        return process
 
