@@ -47,6 +47,7 @@ class SubprocessRunner(Runner):
             encoding=None if isinstance(stdin, bytes) else 'UTF-8',
             env=environ,
             cwd=working_directory,
+            preexec_fn=os.setpgrp
         )
         return process
 

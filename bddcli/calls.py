@@ -7,9 +7,8 @@ from .runners import SubprocessRunner
 
 class Call(metaclass=ABCMeta):
 
-    def __init__(self, description=None, nowait=False):
+    def __init__(self, description=None):
         self.description = description
-        self.nowait = False
         self.process = None
 
     def invoke(self, application):
@@ -23,7 +22,11 @@ class Call(metaclass=ABCMeta):
     def conclude(self, application):
         if self.process is None:
             self.invoke(application)
-        self.stdout, self.stderr =  self.process.communicate(self.stdin)
+
+        self.communicate()
+
+    def communicate(self, timeout=None):
+        self.stdout, self.stderr = self.process.communicate(self.stdin, timeout)
 
     @property
     def status(self):
@@ -71,12 +74,9 @@ class FirstCall(Call):
     _working_directory = None
 
     def __init__(self, arguments=None, stdin=None, working_directory=None,
-                 environ=None, description=None, nowait=False):
+                 environ=None, description=None):
 
-        super().__init__(
-            description=description,
-            nowait=nowait
-        )
+        super().__init__(description=description)
         self.stdin = stdin
         self.arguments = \
             arguments.split(' ') if isinstance(arguments, str) else arguments
@@ -125,15 +125,11 @@ UNCHANGED = Unchanged()
 
 class AlteredCall(Call):
     def __init__(self, base_call, arguments=UNCHANGED, stdin=UNCHANGED,
-                 working_directory=None, environ=None, description=None,
-                 nowait=False):
+                 working_directory=None, environ=None, description=None):
 
         self.base_call = base_call
         self.diff = {}
-        super().__init__(
-            description=description,
-            nowait=nowait
-        )
+        super().__init__(description=description)
         self.stdin = stdin
         self.arguments = arguments
         self.working_directory = working_directory

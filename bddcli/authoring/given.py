@@ -1,3 +1,6 @@
+import os
+import signal
+
 from ..context import Context
 from ..calls import FirstCall, AlteredCall, Call
 from .story import Story
@@ -6,11 +9,26 @@ from .manipulation import Manipulator
 
 class Given(Story, Context):
 
-    def __init__(self, application, *args, **kwargs):
+    def __init__(self, application, *args, nowait=False, **kwargs):
         self.application = application
+        self.nowait = nowait
         base_call = FirstCall(*args, **kwargs)
-        base_call.conclude(application)
+        self.invoke(base_call)
         super().__init__(base_call)
+
+    def invoke(self, call):
+        if self.nowait:
+            call.invoke(self.application)
+        else:
+            call.conclude(self.application)
+
+    def kill(self, s=signal.SIGTERM):
+        call = self.current_call
+        os.killpg(os.getpgid(call.process.pid), s)
+
+    def wait(self, timeout=None):
+        call = self.current_call
+        call.communicate(timeout)
 
     @property
     def current_call(self) -> Call:
@@ -42,11 +60,9 @@ class Given(Story, Context):
                 kwargs[k] = clone
 
         new_call = AlteredCall(self.base_call, *args, **kwargs)
-        new_call.conclude(self.application)
+        self.invoke(new_call)
         if record:
             self.calls.append(new_call)
 
         return new_call
-
-
 
