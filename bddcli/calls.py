@@ -8,9 +8,10 @@ from .runners import SubprocessRunner
 
 class Call(metaclass=ABCMeta):
 
-    def __init__(self, description=None, response=None):
+    def __init__(self, description=None, response=None, nowait=False):
         self.description = description
         self.response = response
+        self.nowait = False
 
     def invoke(self, application) -> Response:
         return SubprocessRunner(application).run(
@@ -62,11 +63,14 @@ class FirstCall(Call):
     _environ = None
     _working_directory = None
 
-    def __init__(self, arguments=None, stdin=None,
-                 working_directory=None, environ=None, description=None,
-                 response=None):
+    def __init__(self, arguments=None, stdin=None, working_directory=None,
+                 environ=None, description=None, response=None, nowait=False):
 
-        super().__init__(description=description, response=response)
+        super().__init__(
+            description=description,
+            response=response,
+            nowait=nowait
+        )
         self.stdin = stdin
         self.arguments = \
             arguments.split(' ') if isinstance(arguments, str) else arguments
@@ -114,13 +118,17 @@ UNCHANGED = Unchanged()
 
 
 class AlteredCall(Call):
-    def __init__(self, base_call, arguments=UNCHANGED,
-                 stdin=UNCHANGED, working_directory=None,
-                 environ=None, description=None, response=None):
+    def __init__(self, base_call, arguments=UNCHANGED, stdin=UNCHANGED,
+                 working_directory=None, environ=None, description=None,
+                 response=None, nowait=False):
 
         self.base_call = base_call
         self.diff = {}
-        super().__init__(description=description, response=response)
+        super().__init__(
+            description=description,
+            response=response,
+            nowait=nowait
+        )
         self.stdin = stdin
         self.arguments = arguments
         self.working_directory = working_directory
