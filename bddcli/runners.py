@@ -4,13 +4,10 @@ import sys
 import subprocess as sp
 from os import path
 
-from .response import Response
-
 
 class Runner(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def run(self, arguments=None, stdin=None,
-            environ=None, **kw) -> Response:  # pragma: no cover
+    def run(self, arguments=None, stdin=None, environ=None, **kw):  # pragma: no cover
         pass
 
 
@@ -31,7 +28,7 @@ class SubprocessRunner(Runner):
         self.environ = environ
 
     def run(self, arguments=None, stdin=None, working_directory=None,
-            environ=None, **kw) -> Response:
+            environ=None, **kw):
         command = [
             self.bootstrapper,
             self.application.name,
@@ -41,9 +38,9 @@ class SubprocessRunner(Runner):
         if arguments:
             command += arguments
 
-        result = sp.run(
+        process = sp.Popen(
             ' '.join(command),
-            input=stdin,
+            stdin=sp.PIPE if stdin is not None else None,
             stdout=sp.PIPE,
             stderr=sp.PIPE,
             shell=True,
@@ -51,5 +48,7 @@ class SubprocessRunner(Runner):
             env=environ,
             cwd=working_directory,
         )
-        return Response(result.returncode, result.stdout, result.stderr)
+        stdout, stderr = process.communicate(input=stdin)
+
+        return stdout, stderr, process
 

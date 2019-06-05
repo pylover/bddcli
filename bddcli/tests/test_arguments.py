@@ -15,6 +15,7 @@ app = Application('foo', 'bddcli.tests.test_arguments:foo')
 def test_arguments():
     with Given(app, ['bar']):
         assert stdout == 'foo bar\n'
+        assert status == 0
 
         when(given - 'bar')
         assert stdout == 'foo\n'

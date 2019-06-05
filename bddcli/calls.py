@@ -2,7 +2,6 @@ import re
 import sys
 from abc import ABCMeta, abstractmethod
 
-from .response import Response
 from .runners import SubprocessRunner
 
 
@@ -12,8 +11,9 @@ class Call(metaclass=ABCMeta):
         self.description = description
         self.response = response
         self.nowait = False
+        self.process = None
 
-    def invoke(self, application) -> Response:
+    def invoke(self, application):
         return SubprocessRunner(application).run(
             arguments=self.arguments,
             stdin=self.stdin,
@@ -22,8 +22,16 @@ class Call(metaclass=ABCMeta):
         )
 
     def conclude(self, application):
-        if self.response is None:
-            self.response = self.invoke(application)
+        if self.process is None:
+            self.stdout, self.stderr, self.process = \
+                self.invoke(application)
+
+    @property
+    def status(self):
+        if self.process is None:
+            return None
+
+        return self.process.returncode
 
     @property
     @abstractmethod

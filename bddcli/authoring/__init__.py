@@ -9,9 +9,9 @@ from .manipulation import Manipulator, Append, Remove, Update, \
 
 
 story = ObjectProxy(Given.get_current)
-status = ObjectProxy(lambda: story.response.status)
-stdout = ObjectProxy(lambda: story.response.stdout)
-stderr = ObjectProxy(lambda: story.response.stderr)
+status = ObjectProxy(lambda: story.current_call.status)
+stdout = ObjectProxy(lambda: story.current_call.stdout)
+stderr = ObjectProxy(lambda: story.current_call.stderr)
 given = CompositeManipulatorInitializer()
 
 
