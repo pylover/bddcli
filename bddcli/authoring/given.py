@@ -26,9 +26,9 @@ class Given(Story, Context):
         call = self.current_call
         os.killpg(os.getpgid(call.process.pid), s)
 
-    def wait(self, timeout=None):
+    def wait(self, stdin=None, timeout=None):
         call = self.current_call
-        call.communicate(timeout)
+        call.communicate(stdin=stdin, timeout=timeout)
 
     @property
     def current_call(self) -> Call:

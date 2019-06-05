@@ -1,5 +1,6 @@
 import re
 import sys
+import subprocess as sp
 from abc import ABCMeta, abstractmethod
 
 from .runners import SubprocessRunner
@@ -14,9 +15,10 @@ class Call(metaclass=ABCMeta):
     def invoke(self, application):
         self.process = SubprocessRunner(application).run(
             arguments=self.arguments,
-            stdin=self.stdin,
+            stdin=sp.PIPE,
             working_directory=self.working_directory,
-            environ=self.environ
+            environ=self.environ,
+            encoding=None if isinstance(self.stdin, bytes) else 'UTF-8',
         )
 
     def conclude(self, application):
@@ -25,8 +27,11 @@ class Call(metaclass=ABCMeta):
 
         self.communicate()
 
-    def communicate(self, timeout=None):
-        self.stdout, self.stderr = self.process.communicate(self.stdin, timeout)
+    def communicate(self, stdin=None, timeout=None):
+        self.stdout, self.stderr = self.process.communicate(
+            input=stdin or self.stdin,
+            timeout=timeout
+        )
 
     @property
     def status(self):

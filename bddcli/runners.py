@@ -7,7 +7,7 @@ from os import path
 
 class Runner(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def run(self, arguments=None, stdin=None, environ=None, **kw):  # pragma: no cover
+    def run(self, arguments=None, environ=None, **kw):  # pragma: no cover
         pass
 
 
@@ -27,8 +27,7 @@ class SubprocessRunner(Runner):
         self.application = application
         self.environ = environ
 
-    def run(self, arguments=None, stdin=None, working_directory=None,
-            environ=None, **kw):
+    def run(self, arguments=None, working_directory=None, environ=None, **kw):
         command = [
             self.bootstrapper,
             self.application.name,
@@ -40,14 +39,13 @@ class SubprocessRunner(Runner):
 
         process = sp.Popen(
             ' '.join(command),
-            stdin=sp.PIPE if stdin is not None else None,
             stdout=sp.PIPE,
             stderr=sp.PIPE,
             shell=True,
-            encoding=None if isinstance(stdin, bytes) else 'UTF-8',
             env=environ,
             cwd=working_directory,
-            preexec_fn=os.setpgrp
+            preexec_fn=os.setpgrp,
+            **kw,
         )
         return process
 
