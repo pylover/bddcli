@@ -3,13 +3,14 @@ import os
 from bddcli import Given, stdout, Application, when, given
 
 
-def foo():  # pragma: no cover
+def foos():  # pragma: no cover
     e = os.environ.copy()
-    del e['PWD']
-    print(' '.join(f'{k}: {v}' for k, v in e.items()))
+    print(' '.join(
+        f'{k}: {v}' for k, v in e.items() if k not in ['LC_CTYPE', 'PWD']
+    ))
 
 
-app = Application('foo', 'bddcli.tests.test_environ:foo')
+app = Application('foo', 'bddcli.tests.test_environ:foos')
 
 
 def test_environ():

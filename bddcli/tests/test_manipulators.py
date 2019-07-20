@@ -8,8 +8,9 @@ from bddcli import Given, when, stdout, Application, given, stderr
 
 def baz():  # pragma: no cover
     e = os.environ.copy()
-    del e['PWD']
-    print(' '.join(f'{k}: {v}' for k, v in e.items()))
+    print(' '.join(
+        f'{k}: {v}' for k, v in e.items() if k not in ['LC_CTYPE', 'PWD']
+    ))
     print(' '.join(sys.argv), file=sys.stderr)
 
 
