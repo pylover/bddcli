@@ -25,9 +25,9 @@ setup(
     long_description_content_type='text/markdown',  # This is important!
     install_requires=[
         'pyyaml',
-        'easycli'
+        'easycli >= 1.3.2, < 2'
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     entry_points={
         'console_scripts': [
             'bddcli-bootstrapper = bddcli_bootstrapper:main'
