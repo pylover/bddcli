@@ -27,7 +27,7 @@ setup(
         'pyyaml',
         'easycli'
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     entry_points={
         'console_scripts': [
             'bddcli-bootstrapper = bddcli_bootstrapper:main'
