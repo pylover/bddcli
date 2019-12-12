@@ -35,10 +35,7 @@ class Call(metaclass=ABCMeta):
 
     @property
     def status(self):
-        if self.process is None:
-            return None
-
-        return self.process.returncode
+        return None if self.process is None else self.process.returncode
 
     @property
     @abstractmethod
