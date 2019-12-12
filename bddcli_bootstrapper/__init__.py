@@ -8,12 +8,11 @@ def main():
     address = sys.argv.pop(1)
     sys.argv[0] = prog
 
-    module, func = address.split(':')
-    module = __import__(
-        module,
-        globals={'__name__': __name__},
-        fromlist=[func]
-    )
-    func = getattr(module, func)
+    module, expression = address.split(':')
+    module = importlib.import_module(module)
+    func = eval(f'{expression}', globals(), module.__dict__)
     return func()
 
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -27,3 +27,17 @@ def test_basic_pipeline():
         assert status == 1
         assert stderr == f'error: bad\n'
 
+
+class Foo:
+    @classmethod
+    def main(cls):
+        print('Foo.main')
+
+
+def test_object_attribute():
+    app = Application('foo', 'bddcli.tests.test_pipeline:Foo.main')
+    with Given(app):
+        assert status == 0
+        assert stdout == 'Foo.main\n'
+        assert stderr == ''
+
