@@ -21,7 +21,7 @@ def foo():  # pragma: no cover
     return done
 
 
-app = Application('foo', 'bddcli.tests.test_signal:foo')
+app = Application('foo', 'tests.test_signal:foo')
 
 
 def test_signal():

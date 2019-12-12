@@ -14,7 +14,7 @@ def baz():  # pragma: no cover
     print(' '.join(sys.argv), file=sys.stderr)
 
 
-app = Application('foo', 'bddcli.tests.test_manipulators:baz')
+app = Application('foo', 'tests.test_manipulators:baz')
 
 
 def test_dict_manipulators():

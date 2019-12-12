@@ -10,7 +10,7 @@ def foos():  # pragma: no cover
     ))
 
 
-app = Application('foo', 'bddcli.tests.test_environ:foos')
+app = Application('foo', 'tests.test_environ:foos')
 
 
 def test_environ():

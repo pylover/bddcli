@@ -13,7 +13,7 @@ def foo():  # pragma: no cover
 
 
 def test_basic_pipeline():
-    app = Application('foo', 'bddcli.tests.test_pipeline:foo')
+    app = Application('foo', 'tests.test_pipeline:foo')
     with Given(app):
         assert status == 0
         assert stdout == ''
@@ -35,7 +35,7 @@ class Foo:
 
 
 def test_object_attribute():
-    app = Application('foo', 'bddcli.tests.test_pipeline:Foo.main')
+    app = Application('foo', 'tests.test_pipeline:Foo.main')
     with Given(app):
         assert status == 0
         assert stdout == 'Foo.main\n'

@@ -7,7 +7,7 @@ def foo():  # pragma: no cover
     print(os.getcwd())
 
 
-app = Application('foo', 'bddcli.tests.test_workingdirectory:foo')
+app = Application('foo', 'tests.test_workingdirectory:foo')
 
 
 def test_working_directory():

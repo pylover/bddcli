@@ -9,7 +9,7 @@ def foo():  # pragma: no cover
     print(' '.join(sys.argv))
 
 
-app = Application('foo', 'bddcli.tests.test_proxy:foo')
+app = Application('foo', 'tests.test_proxy:foo')
 
 
 def test_proxy():

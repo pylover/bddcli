@@ -8,7 +8,7 @@ def foo():  # pragma: no cover
     print(sys.stdin.read(), flush=True)
 
 
-app = Application('foo', 'bddcli.tests.test_interactive:foo')
+app = Application('foo', 'tests.test_interactive:foo')
 
 
 def test_signal():

@@ -9,7 +9,7 @@ def foo():  # pragma: no cover
 
 
 def test_binary_pipeline():
-    app = Application('foo', 'bddcli.tests.test_pipeline_binary:foo')
+    app = Application('foo', 'tests.test_pipeline_binary:foo')
     with Given(app, stdin=b'bar'):
         assert stderr == b''
         assert stdout == b'bar'
