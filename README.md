@@ -36,7 +36,7 @@ def foo():
 app = Application('foo', 'mymodule:foo')
 
 
-with Given(app, 'Pass single positional argument', 'bar'):
+with Given(app, 'bar'):
     assert status == 0
     assert stdout == 'foo bar\n'
 
@@ -58,7 +58,7 @@ with Given(app, 'Pass single positional argument', 'bar'):
 ### Standard input
 
 ```python
-with Given(app, 'Pass stdin', stdin='foo'):
+with Given(app, stdin='foo'):
     assert ...
 
     when('stdin is empty', stdin='')
@@ -91,7 +91,7 @@ def foo():
 
 
 app = Application('foo', 'mymodule:foo')
-with Given(app, 'Environment variables', environ={'bar': 'baz'}):
+with Given(app, environ={'bar': 'baz'}):
     assert stdout == 'bar: baz\n'
 
     when('Without any variable', environ=given - 'bar')
