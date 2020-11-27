@@ -127,7 +127,8 @@ UNCHANGED = Unchanged()
 
 class AlteredCall(Call):
     def __init__(self, base_call, arguments=UNCHANGED, stdin=UNCHANGED,
-                 working_directory=None, environ=None, description=None):
+                 working_directory=UNCHANGED, environ=UNCHANGED,
+                 description=None):
 
         self.base_call = base_call
         self.diff = {}

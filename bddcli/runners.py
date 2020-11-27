@@ -13,13 +13,19 @@ class Runner(metaclass=abc.ABCMeta):
 
 class SubprocessRunner(Runner):
 
+    def _findbindir(self):
+        bootstrapper = 'bddcli-bootstrapper'
+        for d in sys.path:
+            if bootstrapper in os.listdir(d):
+                return d
+
     @property
     def bootstrapper(self):
         bootstrapper = 'bddcli-bootstrapper'
         if 'VIRTUAL_ENV' in os.environ:
             bindir = path.join(os.environ['VIRTUAL_ENV'], 'bin')
         else:  # pragma: no cover
-            bindir = '/usr/local/bin'
+            bindir = self._findbindir()
 
         return path.join(bindir, bootstrapper)
 
@@ -32,6 +38,7 @@ class SubprocessRunner(Runner):
             self.bootstrapper,
             self.application.name,
             self.application.address,
+            working_directory or '.',
         ]
 
         if arguments:
@@ -43,7 +50,7 @@ class SubprocessRunner(Runner):
             stderr=sp.PIPE,
             shell=True,
             env=environ,
-            cwd=working_directory,
+            #cwd=working_directory,
             preexec_fn=os.setpgrp,
             **kw,
         )
