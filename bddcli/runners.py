@@ -50,9 +50,7 @@ class SubprocessRunner(Runner):
             stderr=sp.PIPE,
             shell=True,
             env=environ,
-            #cwd=working_directory,
             preexec_fn=os.setpgrp,
             **kw,
         )
         return process
-

@@ -1,8 +1,6 @@
 import sys
 
-import pytest
-
-from bddcli import Given, given, when, stdout, status, stderr, Application
+from bddcli import Given, stdout, Application
 
 
 def foo():  # pragma: no cover
@@ -16,4 +14,3 @@ def test_proxy():
     with Given(app, ['bar']):
         assert stdout == 'foo bar\n'
         assert len(stdout) == 8
-

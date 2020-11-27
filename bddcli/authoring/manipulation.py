@@ -2,7 +2,6 @@ import abc
 from collections.abc import Iterable
 
 
-
 class Manipulator(metaclass=abc.ABCMeta):
     def __init__(self, *args, **kwargs):
         self.list_diff = args
@@ -107,4 +106,3 @@ class CompositeManipulatorInitializer(CompositeManipulator):
 
     def __or__(self, other):
         return CompositeManipulator() | other
-

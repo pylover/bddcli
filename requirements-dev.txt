@@ -1,2 +1,4 @@
 -r requirements-ci.txt
 pytest-pudb
+ropevim
+ipython

@@ -65,4 +65,3 @@ class Given(Story, Context):
             self.calls.append(new_call)
 
         return new_call
-

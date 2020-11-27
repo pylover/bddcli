@@ -1,5 +1,3 @@
-import re
-import sys
 import subprocess as sp
 from abc import ABCMeta, abstractmethod
 
@@ -179,4 +177,3 @@ class AlteredCall(Call):
     @environ.setter
     def environ(self, value):
         self.update_diff('environ', value)
-

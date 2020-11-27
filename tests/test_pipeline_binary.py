@@ -1,6 +1,6 @@
 import sys
 
-from bddcli import Given, when, stdout, status, stderr, Application
+from bddcli import Given, stdout, status, stderr, Application
 
 
 def foo():  # pragma: no cover
@@ -14,6 +14,3 @@ def test_binary_pipeline():
         assert stderr == b''
         assert stdout == b'bar'
         assert status == 0
-
-
-

@@ -1,3 +1,4 @@
+"""Test scenario authoring stuff."""
 
 from ..proxy import ObjectProxy
 from ..calls import FirstCall, AlteredCall, Call
@@ -17,4 +18,3 @@ given = CompositeManipulatorInitializer()
 
 def when(*args, **kwargs):
     return story.when(*args, **kwargs)
-
