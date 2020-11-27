@@ -1,8 +1,6 @@
 import sys
 
-import pytest
-
-from bddcli import Given, given, when, stdout, status, stderr, Application
+from bddcli import Given, given, when, stdout, status, Application
 
 
 def foo():  # pragma: no cover

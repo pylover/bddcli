@@ -55,4 +55,3 @@ def test_list_manipulators():
 
         with pytest.raises(TypeError):
             when(given | InvalidType())
-

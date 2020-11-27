@@ -23,4 +23,3 @@ def test_signal():
         s.wait()
         assert stdout == 'baz\n'
         assert status == 0
-

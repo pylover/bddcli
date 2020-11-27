@@ -21,11 +21,11 @@ def test_basic_pipeline():
 
         when(stdin='bar')
         assert status == 0
-        assert stdout == f'input: bar\n'
+        assert stdout == 'input: bar\n'
 
         when(stdin='bad')
         assert status == 1
-        assert stderr == f'error: bad\n'
+        assert stderr == 'error: bad\n'
 
 
 class Foo:
@@ -40,4 +40,3 @@ def test_object_attribute():
         assert status == 0
         assert stdout == 'Foo.main\n'
         assert stderr == ''
-

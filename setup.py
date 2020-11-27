@@ -39,11 +39,10 @@ setup(
         'Intended Audience :: Developers',
         'Natural Language :: English',
         'Development Status :: 4 - Beta',
-        #'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
         'Topic :: Software Development',
     ]
 )
-

@@ -12,7 +12,7 @@ app = Application('foo', 'tests.test_workingdirectory:foo')
 
 def test_working_directory():
     with Given(app):
-        #assert f'{os.getcwd()}\n' == stdout
+        assert f'{os.getcwd()}\n' == stdout
 
         when(working_directory='/tmp')
         assert stdout == '/tmp\n'

@@ -39,4 +39,3 @@ def test_signal():
         s.wait()
         assert stdout == 'Signal received: 2\n'
         assert status == -2
-
