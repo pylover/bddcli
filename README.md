@@ -40,16 +40,20 @@ with Given(app, 'bar'):
     assert status == 0
     assert stdout == 'foo bar\n'
 
-    when('Without any argument', given - 'bar')
+    # Without any argument
+    when(given - 'bar')
     assert stdout == 'foo\n'
 
-    when('Pass multiple arguments', 'bar baz')
+    # Pass multiple arguments
+    when('bar baz')
     assert stdout == 'foo bar baz\n'
 
-    when('Pass multiple arguments, another method', ['bar', 'baz'])
+    # Pass multiple arguments, another method
+    when(['bar', 'baz'])
     assert stdout == 'foo bar baz\n'
 
-    when('Add an argument', given + 'baz')
+    # Add an argument
+    when(given + 'baz')
     assert stdout == 'foo bar baz\n'
 
 ```
@@ -61,7 +65,8 @@ with Given(app, 'bar'):
 with Given(app, stdin='foo'):
     assert ...
 
-    when('stdin is empty', stdin='')
+    # stdin is empty
+    when(stdin='')
     assert ...
 
 ```
@@ -94,10 +99,12 @@ app = Application('foo', 'mymodule:foo')
 with Given(app, environ={'bar': 'baz'}):
     assert stdout == 'bar: baz\n'
 
-    when('Without any variable', environ=given - 'bar')
+    # Without any variable
+    when(environ=given - 'bar')
     assert stdout == '\n'
 
-    when('Add another variables', environ=given + {'qux': 'quux'})
+    # Add another variables
+    when(environ=given + {'qux': 'quux'})
     assert stdout == 'bar: baz qux: quux\n'
 ```
 
