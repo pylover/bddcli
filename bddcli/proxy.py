@@ -69,3 +69,9 @@ class ObjectProxy:  # pragma: no cover
 
     def __getitem__(self, key):
         return self.proxied_object.__getitem__(key)
+
+    def __add__(self, other):
+        return self.proxied_object + other
+
+    def __mul__(self, other):
+        return self.proxied_object * other
