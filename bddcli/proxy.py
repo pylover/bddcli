@@ -66,3 +66,6 @@ class ObjectProxy:  # pragma: no cover
 
     def __len__(self):
         return len(self.proxied_object)
+
+    def __getitem__(self, key):
+        return self.proxied_object.__getitem__(key)

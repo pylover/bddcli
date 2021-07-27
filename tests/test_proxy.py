@@ -14,3 +14,5 @@ def test_proxy():
     with Given(app, ['bar']):
         assert stdout == 'foo bar\n'
         assert len(stdout) == 8
+
+        assert stdout[:-1] == 'foo bar'
