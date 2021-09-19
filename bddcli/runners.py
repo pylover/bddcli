@@ -1,8 +1,13 @@
 import os
 import abc
 import sys
-import subprocess as sp
 from os import path
+
+from .platform_ import (
+    bootstrapper_name,
+    form_bootstrapper_path,
+    popen
+)
 
 
 class Runner(metaclass=abc.ABCMeta):
@@ -14,20 +19,24 @@ class Runner(metaclass=abc.ABCMeta):
 class SubprocessRunner(Runner):
 
     def _findbindir(self):
-        bootstrapper = 'bddcli-bootstrapper'
+        bootstrapper = bootstrapper_name()
         for d in sys.path:
-            if bootstrapper in os.listdir(d):
-                return d
+            try:
+                if bootstrapper in os.listdir(d):
+                    return d
+            except FileNotFoundError or NotADirectoryError:
+                # Nothing guarantees a PATH entry is valid
+                pass
 
     @property
     def bootstrapper(self):
-        bootstrapper = 'bddcli-bootstrapper'
+        bootstrapper = bootstrapper_name()
         if 'VIRTUAL_ENV' in os.environ:
             bindir = path.join(os.environ['VIRTUAL_ENV'], 'bin')
         else:  # pragma: no cover
             bindir = self._findbindir()
 
-        return path.join(bindir, bootstrapper)
+        return form_bootstrapper_path(bindir, bootstrapper)
 
     def __init__(self, application, environ=None):
         self.application = application
@@ -44,13 +53,5 @@ class SubprocessRunner(Runner):
         if arguments:
             command += arguments
 
-        process = sp.Popen(
-            ' '.join(command),
-            stdout=sp.PIPE,
-            stderr=sp.PIPE,
-            shell=True,
-            env=environ,
-            preexec_fn=os.setpgrp,
-            **kw,
-        )
+        process = popen(command, environ, **kw)
         return process

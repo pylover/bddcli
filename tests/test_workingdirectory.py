@@ -13,6 +13,9 @@ app = Application('foo', 'tests.test_workingdirectory:foo')
 def test_working_directory():
     with Given(app):
         assert f'{os.getcwd()}\n' == stdout
-
-        when(working_directory='/tmp')
-        assert stdout == '/tmp\n'
+        if os.name == "nt":
+            tmp_dir = os.getenv('TEMP')
+        else:
+            tmp_dir = '/tmp'
+        when(working_directory=tmp_dir)
+        assert stdout == tmp_dir + '\n'
