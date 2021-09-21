@@ -8,9 +8,13 @@ from bddcli import Given, when, stdout, Application, given, stderr
 
 def baz():  # pragma: no cover
     e = os.environ.copy()
+    # For Linux and Windows
+    discarded_variables = ['LC_CTYPE', 'PWD',
+                           'COMSPEC', 'PATHEXT', 'PROMPT', 'SYSTEMROOT']
+    # Windows environment variables are case-insensitive, lowercase them
     print(' '.join(
-        f'{k}: {v}' for k, v in e.items() if k not in ['LC_CTYPE', 'PWD']
-    ))
+        f'{k}: {v}' for k, v in e.items() if k not in discarded_variables
+    ).lower())
     print(' '.join(sys.argv), file=sys.stderr)
 
 

@@ -1,8 +1,8 @@
-import os
 import signal
 
 from ..context import Context
 from ..calls import FirstCall, AlteredCall, Call
+from ..platform_ import killpg
 from .story import Story
 from .manipulation import Manipulator
 
@@ -24,7 +24,7 @@ class Given(Story, Context):
 
     def kill(self, s=signal.SIGTERM):
         call = self.current_call
-        os.killpg(os.getpgid(call.process.pid), s)
+        killpg(call.process.pid, s)
 
     def wait(self, stdin=None, timeout=None):
         call = self.current_call

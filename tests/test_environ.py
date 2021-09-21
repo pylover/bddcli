@@ -5,9 +5,13 @@ from bddcli import Given, stdout, Application, when, given
 
 def foos():  # pragma: no cover
     e = os.environ.copy()
+    # For Linux and Windows
+    discarded_variables = ['LC_CTYPE', 'PWD',
+                           'COMSPEC', 'PATHEXT', 'PROMPT', 'SYSTEMROOT']
+    # Windows environment variables are case-insensitive, lowercase them
     print(' '.join(
-        f'{k}: {v}' for k, v in e.items() if k not in ['LC_CTYPE', 'PWD']
-    ))
+        f'{k}: {v}' for k, v in e.items() if k not in discarded_variables
+    ).lower())
 
 
 app = Application('foo', 'tests.test_environ:foos')
