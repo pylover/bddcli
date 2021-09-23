@@ -8,7 +8,9 @@ Test any command line interface in BDD manner.
 ### About
 
 A framework to easily test your command line interface in another(isolated) 
-process and gather stdout, stderr and returnStatus of the process.
+process and gather `stdout`, `stderr` and `exit-status` of the process.
+
+Thanks to https://github.com/cheremnov for the Windows support.
 
 ## Installation
 
