@@ -22,7 +22,7 @@ else:
 
 
 # Find bootstrapper location
-if 'VIRTUAL_ENV' in os.environ:
+if 'VIRTUAL_ENV' in os.environ:  # pragma: no cover
     BOOTSTRAPPER_PATH = os.path.join(os.environ['VIRTUAL_ENV'], VENV_BINDIR)
 else:
     for d in sys.path:
@@ -36,7 +36,7 @@ else:
             # Nothing guarantees a PATH entry is valid
             continue
 
-    else:
+    else:  # pragma: no cover
         raise FileNotFoundError(
             f'Cannot find {BOOTSTRAPPER_FILENAME} in your PATH '
             f'environment variable: {sys.path}'
