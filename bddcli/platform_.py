@@ -3,6 +3,9 @@ import sys
 import subprocess as sp
 
 
+HOME = os.path.expanduser('~')
+
+
 if os.name == 'nt':
     BOOTSTRAPPER_FILENAME = 'bddcli-bootstrapper.exe'
     VENV_BINDIR = 'Scripts'
@@ -26,7 +29,7 @@ if 'VIRTUAL_ENV' in os.environ:  # pragma: no cover
     BOOTSTRAPPER_PATH = os.path.join(os.environ['VIRTUAL_ENV'], VENV_BINDIR)
     try_ = os.path.join(BOOTSTRAPPER_PATH, BOOTSTRAPPER_FILENAME)
     if not os.path.exists(try_):
-        BOOTSTRAPPER_PATH = os.path.join(os.environ['HOME'], '.local', 'bin')
+        BOOTSTRAPPER_PATH = os.path.join(HOME, '.local', 'bin')
 else:
     for d in sys.path:
         if os.path.isfile(d):
