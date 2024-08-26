@@ -52,9 +52,7 @@ jobs:
       with:
         python-version: 3.12
     - name: Install dependencies
-      run: |
-        sudo git clone https://github.com/pylover/python-makelib.git /usr/local/lib/python-makelib
-        make install-common editable-install
+      run: python -m pip install coveralls
     - name: Coveralls Finished
       run: coveralls --finish
       env:
