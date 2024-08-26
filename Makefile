@@ -1,28 +1,18 @@
-PRJ = bddcli
-
-.PHONY: test
-test:
-	pytest tests
+PYDEPS_COMMON += \
+	'coveralls'
 
 
-.PHONY: cover
-cover:
-	pytest --cov=$(PRJ) tests
+# Assert the python-makelib version
+PYTHON_MAKELIB_VERSION_REQUIRED = 1.5.4
 
 
-.PHONY: lint
-lint:
-	pylama
+# Ensure the python-makelib is installed
+PYTHON_MAKELIB_PATH = /usr/local/lib/python-makelib
+ifeq ("", "$(wildcard $(PYTHON_MAKELIB_PATH))")
+  MAKELIB_URL = https://github.com/pylover/python-makelib
+  $(error python-makelib is not installed. see "$(MAKELIB_URL)")
+endif
 
 
-.PHONY: dist
-dist:
-	python setup.py sdist
-
-
-.PHONY: env
-env:
-	pip install -r requirements-dev.txt
-	pip install -e .
-
-
+# Include a proper bundle rule file.
+include $(PYTHON_MAKELIB_PATH)/venv-lint-test-pypi.mk
