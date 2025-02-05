@@ -11,7 +11,7 @@ def foo():  # pragma: no cover
 app = Application('foo', 'tests.test_interactive:foo')
 
 
-def test_signal():
+def test_interactive():
     with Given(app, nowait=True) as s:
         # Wait some moments
         time.sleep(1)
