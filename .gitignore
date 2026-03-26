@@ -95,3 +95,6 @@ tests/stuff/demo.txt
 
 # pytest
 .pytest_cache
+
+# python-makelib
+activate.sh

@@ -1,8 +1,8 @@
 [run]
-source=bddrest
-concurrency=multiprocessing
+patch = subprocess
+source = bddcli
 omit = 
-	bddrest/__init__.py
+
 
 [report]
 exclude_lines=
