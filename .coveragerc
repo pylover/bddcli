@@ -2,7 +2,7 @@
 patch = subprocess
 source = bddcli
 omit = 
-
+	bddcli/platform_.py
 
 [report]
 exclude_lines=

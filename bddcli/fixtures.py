@@ -12,20 +12,20 @@ def _which(name):
         if os.path.isfile(path) and os.access(path, os.X_OK):
             return path
 
-    return None
+    return None  # pragma: no cover
 
 
 @contextlib.contextmanager
 def bootstrapper_patch(pycode):
     tmp = tempfile.mkdtemp()
     bindir = os.path.abspath(os.path.dirname(sys.executable))
-    if bindir not in sys.path:
+    if bindir not in sys.path:  # pragma: no cover
         sys.path.insert(0, bindir)
 
     bsfile = _which('bddcli-bootstrapper')
     assert os.path.exists(bsfile)
     newname = os.path.join(tmp, 'backup')
-    os.rename(bsfile, os.path.join(tmp, 'backup'))
+    shutil.move(bsfile, newname)
 
     with open(newname) as infile, open(bsfile, 'w') as outfile:
         outfile.write(infile.readline())
@@ -42,5 +42,5 @@ def bootstrapper_patch(pycode):
     try:
         yield
     finally:
-        os.rename(newname, bsfile)
+        shutil.move(newname, bsfile)
         shutil.rmtree(tmp)
